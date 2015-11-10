@@ -1,0 +1,7 @@
+<ol id="list-items">
+  <%= render @items %>
+</ol>
+<input type="text" id="add-item" placeholder="Add an item">
+<div id="item-template" class="hidden">
+  <%= render partial: 'items/item', locals: { item: Item.new } %>
+</div>

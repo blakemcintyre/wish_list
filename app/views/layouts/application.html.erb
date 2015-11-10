@@ -2,13 +2,34 @@
 <html>
 <head>
   <title>WishList</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
 </head>
 <body>
-
-<%= yield %>
-
+  <!-- Top Header -->
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/">Wish List</a>
+      </div>
+      <div class="collapse navbar-collapse">
+        <a class="navbar-brand" href="/users">Users</a>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+  <!-- TODO: figure out the margin issue -->
+  <div class="container-fluid" style="margin-top: 50px;">
+    <div class="row">
+      <div class="col-xs-6 col-md-1">
+        <%= render 'shared/users' %>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-11">
+        <p class="notice"><%= notice %></p>
+        <p class="alert"><%= alert %></p>
+        <%= yield %>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

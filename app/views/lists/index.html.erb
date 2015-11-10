@@ -1,0 +1,32 @@
+<% if @unclaimed_items.empty? && @claimed_items.empty? %>
+  Nothing has been added to the wish list yet.
+<% else %>
+  <% if @unclaimed_items.empty? %>
+    Nothing is available to claim on the wish list.
+  <% else %>
+  <h3>Available Items</h3>
+    <ol id="claimable-items">
+    <% @unclaimed_items.each do |item| %>
+      <li id="item-<%= item.id %>">
+        <%= form_for(ItemClaim.new(item: item)) do |f| %>
+          <%= f.hidden_field :item_id %>
+          <%= item.name %> [<%= item.position %>]
+          <%= f.submit 'Claim', class: 'btn btn-default btn-xs' %>
+        <% end %>
+      </li>
+    <% end %>
+    </ol>
+  <% end %>
+
+  <% if @claimed_items.present? %>
+  <h3>Claimed Items</h3>
+    <ul id="claimed-items">
+    <% @claimed_items.each do |item| %>
+      <li id="item-<%= item.id %>">
+        <%= item.name %> [<%= item.position %>]
+        <%= link_to 'Unclaim', item_claim_path(item.item_claim), method: :delete, data: { confirm: 'Are you sure?' } if item.item_claim.user == current_user %>
+      </li>
+    <% end %>
+    </ul>
+  <% end %>
+<% end %>

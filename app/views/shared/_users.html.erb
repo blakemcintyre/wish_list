@@ -1,0 +1,11 @@
+<ul class="list-unstyled">
+<% @users.each do |user| %>
+  <li>
+    <% if user == @user %>
+      <%= user.name %>
+    <% else %>
+      <a href="/lists/<%= user.id %>"><%= user.name %></a>
+    <% end %>
+  </li>
+<% end %>
+</ul>
