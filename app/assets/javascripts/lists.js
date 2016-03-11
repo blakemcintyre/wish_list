@@ -44,15 +44,15 @@ $(function() {
       if (newItem.val() == '') { return; }
 
       $.post("/lists.json", { 'item': { 'name': newItem.val() }}, function(item) {
-        var li = $("#item-template li").clone();
-        $(".item-id", li).val(item.id);
-        $(".item-text", li).html(item.name);
-        $(".item-edit-input", li).val(item.name);
-        $("#list-items").append(li);
-        $(".item-cancel", li).click(itemCancel);
-        $(".item-edit", li).click(itemEdit);
-        $(".item-update", li).click(itemUpdate);
-        $(".item-remove", li).click(itemRemove);
+        var tr = $("#item-template tr").clone();
+        $(".item-id", tr).val(item.id);
+        $(".item-text", tr).html(item.name);
+        $(".item-edit-input", tr).val(item.name);
+        $("#list-items tr:last").after(tr);
+        $(".item-cancel", tr).click(itemCancel);
+        $(".item-edit", tr).click(itemEdit);
+        $(".item-update", tr).click(itemUpdate);
+        $(".item-remove", tr).click(itemRemove);
         newItem.val('');
       });
     }
@@ -64,12 +64,12 @@ $(function() {
   $(".item-remove").click(itemRemove);
   $(".item-edit-section").hide();
 
-  $("#list-items").sortable({
+  $("#list-items tbody").sortable({
     axis: "y",
     cursor: "move",
     delay: 150,
-    deactivate: function(event, ui) {
-      $.post("/lists/"+$(".item-id", ui.item).val()+"/reposition.json", { "_method": "PUT", "position": $( "#list-items li" ).index(ui.item)+1 });
+    deactivate: function(event, tr) {
+      $.post("/lists/"+$(".item-id", tr.item).val()+"/reposition.json", { "_method": "PUT", "position": $( "#list-items tr" ).index(tr.item)+1 });
       // TODO: error handling
     }
   });

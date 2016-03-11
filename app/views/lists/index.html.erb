@@ -30,7 +30,7 @@
             <tr id="item-<%= item.id %>">
               <td><%= item.name %></td>
               <td class="text-right">
-                <% if item.item_claim.user == current_user && item.deleted_at.blank? %>
+                <% if item.deleted_at.blank? && item.item_claim.user == current_user %>
                   <%= link_to 'Unclaim', item_claim_path(item.item_claim), class: 'btn btn-danger btn-xs', method: :delete %>
                 <% end %>
               </td>

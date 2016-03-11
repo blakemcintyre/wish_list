@@ -1,15 +1,17 @@
-<li>
+<tr>
   <input class="item-id" type="hidden" value="<%= item.id %>">
-  <div class="item-show-section">
-    <span class="item-text"><%= item.name %></span>
-    <a class="item-edit text-muted">Edit</a>
-    <span class="text-muted">|</span>
-    <a class="item-remove text-muted">Remove</a>
-  </div>
-  <div class="item-edit-section">
-    <input class="item-edit-input" type="text" value="<%= item.name %>">
-    <a class="item-update text-muted">Save</a>
-    <span class="text-muted">|</span>
-    <a class="item-cancel text-muted">Cancel</a>
-  </div>
+  <td>
+    <span class="item-show-section item-text"><%= item.name %></span>
+    <input class="item-edit-section item-edit-input" type="text" value="<%= item.name %>">
+  </td>
+  <td class="text-right">
+    <!-- Show -->
+    <a class="item-show-section item-edit text-muted">Edit</a>
+    <span class="item-show-section text-muted">|</span>
+    <a class="item-show-section item-remove text-muted">Remove</a>
+    <!-- Edit -->
+    <a class="item-edit-section item-update text-muted">Save</a>
+    <span class="item-edit-section text-muted">|</span>
+    <a class="item-edit-section item-cancel text-muted">Cancel</a>
+  </td>
 </li>

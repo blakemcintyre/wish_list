@@ -1,7 +1,15 @@
-<ol id="list-items">
-  <%= render @items %>
-</ol>
-<input type="text" id="add-item" placeholder="Add an item">
-<div id="item-template" class="hidden">
-  <%= render partial: 'items/item', locals: { item: Item.new } %>
+<div class="row">
+  <div class="col-md-8">
+    <table id="list-items" class="table table-condensed table-hover">
+      <tbody>
+        <%= render @items %>
+      </tbody>
+    </table>
+  </div>
 </div>
+<input type="text" id="add-item" placeholder="Add an item">
+<table id="item-template" class="hidden">
+  <tbody>
+    <%= render partial: 'items/item', locals: { item: Item.new } %>
+  </tbody>
+</table>
