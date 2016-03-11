@@ -12,7 +12,7 @@ class ListsController < ApplicationController
   end
 
   def edit
-    @items = current_user.items
+    @items = current_user.items.undeleted
     respond_with @items
   end
 
@@ -39,7 +39,8 @@ class ListsController < ApplicationController
   end
 
   def destroy
-    @item.destroy
+    @item.update_attributes(deleted_at: Time.zone.now)
+    # TODO: error handling
     render text: nil, status: :ok
   end
 

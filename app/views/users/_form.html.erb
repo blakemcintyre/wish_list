@@ -31,6 +31,13 @@
     <%= f.password_field :confirm_password, class: 'form-control' %>
   </div>
 
+  <% if current_user.admin? %>
+    <div class="form-group">
+      <%= f.label :admin %>
+      <%= f.check_box :admin %>
+    </div>
+  <% end %>
+
   <div class="actions">
     <%= f.submit class: 'btn btn-primary' %>
     <%= link_to 'Cancel', [:users], class: 'btn btn-default' %>

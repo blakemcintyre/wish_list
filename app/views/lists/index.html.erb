@@ -24,7 +24,7 @@
     <% @claimed_items.each do |item| %>
       <li id="item-<%= item.id %>">
         <%= item.name %> [<%= item.position %>]
-        <%= link_to 'Unclaim', item_claim_path(item.item_claim), method: :delete, data: { confirm: 'Are you sure?' } if item.item_claim.user == current_user %>
+        <%= link_to 'Unclaim', item_claim_path(item.item_claim), method: :delete, data: { confirm: 'Are you sure?' } if item.item_claim.user == current_user && item.deleted_at.blank? %>
       </li>
     <% end %>
     </ul>
