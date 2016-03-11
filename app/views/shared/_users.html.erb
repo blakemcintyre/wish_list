@@ -1,11 +1,13 @@
-<ul class="list-unstyled">
-<% @users.each do |user| %>
-  <li>
-    <% if user == @user %>
-      <%= user.name %>
-    <% else %>
-      <a href="/lists/<%= user.id %>"><%= user.name %></a>
-    <% end %>
-  </li>
+<% if @side_bar_users.present? %>
+  <ul class="list-unstyled">
+  <% @side_bar_users.each do |user| %>
+    <li>
+      <% if user == @user %>
+        <%= user.name %>
+      <% else %>
+        <a href="/lists/<%= user.id %>"><%= user.name %></a>
+      <% end %>
+    </li>
+  <% end %>
+  </ul>
 <% end %>
-</ul>

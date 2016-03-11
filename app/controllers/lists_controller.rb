@@ -1,11 +1,11 @@
 class ListsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_other_users, only: [:edit, :index]
+  before_action :set_side_bar_users, only: [:edit, :index]
   before_action :set_item, only: [:reposition, :update, :destroy]
   respond_to :html, :json
 
   def index
-    @user = @users.detect { |user| user.id == params[:user_id].to_i }
+    @user = @side_bar_users.detect { |user| user.id == params[:user_id].to_i }
     @unclaimed_items = @user.items.unclaimed.order(:position)
     @claimed_items = @user.items.claimed.order(:position)
     respond_with @items
@@ -54,7 +54,7 @@ class ListsController < ApplicationController
     @item = current_user.items.find(params[:id])
   end
 
-  def set_other_users
-    @users = User.where.not(id: current_user.id) # .group_by(&:id)
+  def set_side_bar_users
+    @side_bar_users = User.where.not(id: current_user.id)
   end
 end
