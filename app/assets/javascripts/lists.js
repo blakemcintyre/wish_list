@@ -48,7 +48,7 @@ $(function() {
         $(".item-id", tr).val(item.id);
         $(".item-text", tr).html(item.name);
         $(".item-edit-input", tr).val(item.name);
-        $("#list-items tr:last").after(tr);
+        $("#list-items tr:nth-last-of-type(2)").after(tr);
         $(".item-cancel", tr).click(itemCancel);
         $(".item-edit", tr).click(itemEdit);
         $(".item-update", tr).click(itemUpdate);
