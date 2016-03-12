@@ -28,12 +28,6 @@ gem 'jbuilder', '~> 2.0'
 
 gem 'devise'
 
-# Use Unicorn as the app server
-# gem 'unicorn'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
 # Gems dealing with assets
 gem 'bootstrap-sass', '~> 3.3.4'
 
