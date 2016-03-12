@@ -63,16 +63,5 @@ $(function() {
   $(".item-update").click(itemUpdate);
   $(".item-remove").click(itemRemove);
   $(".item-edit-section").hide();
-
-  $("#list-items tbody").sortable({
-    axis: "y",
-    cursor: "move",
-    delay: 150,
-    deactivate: function(event, tr) {
-      $.post("/lists/"+$(".item-id", tr.item).val()+"/reposition.json", { "_method": "PUT", "position": $( "#list-items tr" ).index(tr.item)+1 });
-      // TODO: error handling
-    }
-  });
-
 });
 

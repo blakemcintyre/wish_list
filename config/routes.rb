@@ -16,7 +16,6 @@ Rails.application.routes.draw do
   get 'lists/:user_id' => 'lists#index'
   post 'lists/' => 'lists#create'
   put 'lists/:id' => 'lists#update'
-  put 'lists/:id/reposition' => 'lists#reposition'
   delete 'lists/:id' => 'lists#destroy'
 
   resources :item_claims, only: [:create, :destroy]
