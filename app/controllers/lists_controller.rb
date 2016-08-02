@@ -12,7 +12,7 @@ class ListsController < ApplicationController
   end
 
   def edit
-    @categories = current_user.categories.to_a.push(Category.new(name: 'Miscellaneous'))
+    @categories = current_user.categories
     @grouped_items = current_user.items.undeleted.includes(:category).order(id: :asc).group_by(&:category_id)
     # respond_with @items
   end

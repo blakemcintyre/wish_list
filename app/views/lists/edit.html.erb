@@ -4,7 +4,7 @@
     <% @categories.each do |category| %>
       <%= render partial: 'lists/category_group', locals: { category: category, items: @grouped_items[category.id] } %>
     <% end %>
-    <input type="text" id="add-category" class="form-control" placeholder="Add an category">
+    <input type="text" id="add-category" class="form-control" placeholder="Add a category">
   </div>
 </div>
 <table id="item-template" class="hidden">
