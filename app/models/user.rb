@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   # has_secure_password
 
+  has_many :categories
   has_many :items
   has_many :item_claims
 end

@@ -12,8 +12,9 @@ class ListsController < ApplicationController
   end
 
   def edit
-    @items = current_user.items.undeleted.order(id: :asc)
-    respond_with @items
+    @categories = current_user.categories.to_a.push(Category.new(name: 'Miscellaneous'))
+    @grouped_items = current_user.items.undeleted.includes(:category).order(id: :asc).group_by(&:category_id)
+    # respond_with @items
   end
 
   def update
@@ -40,7 +41,7 @@ class ListsController < ApplicationController
   private
 
   def item_params
-    params.require(:item).permit(:name, :user)
+    params.require(:item).permit(:name, :category_id, :user)
   end
 
   def set_item

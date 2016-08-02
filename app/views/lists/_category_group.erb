@@ -1,0 +1,29 @@
+<table class="table table-condensed table-hover list-items" data-category-id="<%= category.id %>">
+  <thead>
+    <tr>
+      <input class="category-id" type="hidden" value="<%= category.id %>">
+      <th>
+        <span class="category-show-section category-text"><%= category.name %></span>
+        <input class="category-edit-section category-edit-input" type="text" value="<%= category.name %>">
+      </th>
+      <th class="text-right">
+        <!-- Show -->
+        <a class="category-show-section category-edit text-muted">Edit</a>
+        <span class="category-show-section text-muted">|</span>
+        <a class="category-show-section category-remove text-muted">Remove</a>
+        <!-- Edit -->
+        <a class="category-edit-section category-update text-muted">Save</a>
+        <span class="category-edit-section text-muted">|</span>
+        <a class="category-edit-section category-cancel text-muted">Cancel</a>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render items if items %>
+    <tr>
+      <td colspan="2">
+        <input type="text" class="form-control add-item" placeholder="Add an item" data-category-id="<%= category.id %>">
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,16 +1,10 @@
 <h3>My Wish List</h3>
 <div class="row">
   <div class="col-md-8">
-    <table id="list-items" class="table table-condensed table-hover">
-      <tbody>
-        <%= render @items %>
-        <tr>
-          <td colspan="2">
-            <input type="text" id="add-item" class="form-control" placeholder="Add an item">
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <% @categories.each do |category| %>
+      <%= render partial: 'lists/category_group', locals: { category: category, items: @grouped_items[category.id] } %>
+    <% end %>
+    <input type="text" id="add-category" class="form-control" placeholder="Add an category">
   </div>
 </div>
 <table id="item-template" class="hidden">
