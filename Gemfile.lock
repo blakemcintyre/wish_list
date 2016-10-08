@@ -193,7 +193,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  awesome_print
+  awesome_print (~> 1.7)
   bootstrap-sass (~> 3.3.4)
   coffee-rails (~> 4.1.0)
   devise
@@ -201,7 +201,7 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails (~> 5.0, >= 5.0.5)
   pg
-  pry-byebug
+  pry-byebug (~> 3.4)
   quiet_assets
   rails (= 4.2.5.2)
   rspec-rails (~> 3.3.0)
