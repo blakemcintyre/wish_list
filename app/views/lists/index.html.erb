@@ -52,3 +52,27 @@
     </div>
   </div>
 <% end %>
+
+<% if @recently_deleted_items.present? %>
+  <div class="row">
+    <div class="col-md-8">
+      <h4>Recently Removed Items</h4>
+        <table id="recently-delete-items" class="table table-condensed table-hover">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Item</th>
+            </tr>
+          </thead>
+          <tbody>
+          <% @recently_deleted_items.each do |item| %>
+            <tr id="item-<%= item.id %>">
+              <td><%= item.category.name %></td>
+              <td><%= item.name %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+    </div>
+  </div>
+<% end %>

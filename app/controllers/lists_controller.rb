@@ -9,7 +9,7 @@ class ListsController < ApplicationController
     scoped = @user.categories.includes(:items).references(:items).order(:name).order("items.name")
     @unclaimed_items_by_category = scoped.merge(Item.unclaimed)
     @claimed_items_by_category = scoped.merge(Item.claimed)
-    @unclaimed_items = @user.items.unclaimed.order(:name)
+    @recently_deleted_items = @user.items.includes(:category).recently_deleted
   end
 
   def edit
