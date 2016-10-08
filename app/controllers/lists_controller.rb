@@ -33,9 +33,8 @@ class ListsController < ApplicationController
   end
 
   def destroy
-    @item.update_attributes(deleted_at: Time.zone.now)
-    # TODO: error handling
-    render text: nil, status: :ok
+    @item.remove
+    head :no_content
   end
 
   private
