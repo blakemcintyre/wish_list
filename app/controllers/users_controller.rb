@@ -68,6 +68,6 @@ class UsersController < ApplicationController
   end
 
   def verify_access
-    redirect_to '/' unless current_user.admin?
+    redirect_to '/' unless current_user.admin? || current_user.id == params[:id].to_i
   end
 end
