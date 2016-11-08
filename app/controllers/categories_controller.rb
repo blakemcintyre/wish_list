@@ -2,11 +2,17 @@ class CategoriesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_category, only: [:update, :destroy]
 
-  def create
-    @category = Category.create!(category_params.merge(user: current_user))
+  def new
+    @category = Category.new(user: current_user)
+  end
 
-    respond_to do |format|
-      format.json { render json: @category }
+  def create
+    @category = Category.new(category_params.merge(user: current_user))
+
+    if @category.save
+      redirect_to root_path
+    else
+      render action: :new
     end
   end
 
@@ -19,7 +25,7 @@ class CategoriesController < ApplicationController
 
   def destroy
     @category.destroy!
-    header :ok
+    redirect_to root_path
   end
 
   private

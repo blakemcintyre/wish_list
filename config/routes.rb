@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   end
 
   resources :item_claims, only: [:create, :destroy]
-  resources :categories, only: [:create, :update, :destroy]
+  resources :categories, only: [:create, :new, :update, :destroy]
   resources :users
 
   root 'lists#edit'

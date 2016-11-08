@@ -25,17 +25,17 @@ $(function() {
   }
 
   const categoryRemove = function() {
-    alert("TODO: handle non-empty lists");
-    // if (confirm("Are you sure?")) {
-    //   const category_li = $(this).parent().parent();
-    //   $.ajax({
-    //     url: "/categories/"+$(".category-id", category_li).val(),
-    //     type: "DELETE",
-    //     success: function(result) {
-    //       category_li.remove();
-    //     }
-    //   })
+    const category_head_tr = $(this).parent().parent();
+    const category_id = $(".category-id", category_head_tr).val();
+    const itemsCount = $(`#items-for-category-${category_id} tr`).length - 1;
+    let message = "Are you want to delete this category sure?";
+
+    if (itemsCount > 0 ) {
+      message += `\nAll ${itemsCount} item(s) will be delete with it.`;
     }
+
+    return confirm(message);
+  }
 
   const itemCancel = function() {
     const item_li = $(this).parent().parent();
@@ -97,19 +97,6 @@ $(function() {
         newItem.val('');
       });
     }
-  });
-
-  $(".add-category").keypress(function(event) {
-    if (event.which !== 13) return;
-    event.preventDefault();
-
-    const newCategory = $(this);
-    if (newCategory.val() === '') return;
-
-    $.post("/categories.json", { 'category': { 'name': newCategory.val() }}, function(category) {
-      console.log("new category", category);
-      newCategory.val('');
-    });
   });
 
   $(".category-cancel").click(categoryCancel);
