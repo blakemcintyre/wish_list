@@ -30,12 +30,12 @@ gem 'devise'
 # Gems dealing with assets
 gem 'bootstrap-sass', '~> 3.3.4'
 
+# Access an IRB console on exception pages or by using <%= console %> in views
+gem 'web-console', '~> 2.0', group: :development
+
 group :development, :test do
   gem "pry-byebug", "~> 3.4"
   gem "awesome_print", "~> 1.7"
-
-  # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
 
   gem 'quiet_assets'
 
