@@ -13,7 +13,7 @@ class ListsController < ApplicationController
   end
 
   def edit
-    @categories = current_user.categories
+    @categories = current_user.categories.undeleted
     @grouped_items = current_user.items.undeleted.includes(:category).order(id: :asc).group_by(&:category_id)
   end
 
@@ -48,7 +48,7 @@ class ListsController < ApplicationController
   end
 
   def set_side_bar_users
-    @side_bar_users = User.where.not(id: current_user.id)
+    @side_bar_users = User.where.not(id: current_user.id).order(:name)
   end
 
   def find_param_user_from_side_bar_users

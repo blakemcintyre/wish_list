@@ -4,6 +4,8 @@ class Category < ActiveRecord::Base
 
   validates :name, presence: true
 
+  scope :undeleted, -> { where(deleted_at: nil) }
+
   # If the category has no items then it's safe to just delete it
   def remove
     items.each(&:remove)
