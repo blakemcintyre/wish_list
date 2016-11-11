@@ -24,7 +24,7 @@ class CategoriesController < ApplicationController
   end
 
   def destroy
-    @category.destroy!
+    @category.remove
     redirect_to root_path
   end
 

@@ -3,4 +3,15 @@ class Category < ActiveRecord::Base
   has_many :items, dependent: :destroy
 
   validates :name, presence: true
+
+  # If the category has no items then it's safe to just delete it
+  def remove
+    items.each(&:remove)
+
+    if items.empty?
+      destroy
+    else
+      update_attributes(deleted_at: Time.zone.now)
+    end
+  end
 end
