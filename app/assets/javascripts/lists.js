@@ -28,7 +28,7 @@ $(function() {
     const category_head_tr = $(this).parent().parent();
     const category_id = $(".category-id", category_head_tr).val();
     const itemsCount = $("#items-for-category-" + category_id + " tr").length - 1;
-    let message = "Are you want to delete this category sure?";
+    var message = "Are you want to delete this category sure?";
 
     if (itemsCount > 0 ) {
       message += "\nAll " + itemsCount + " item(s) will be delete with it.";
