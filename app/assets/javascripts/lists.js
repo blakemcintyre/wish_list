@@ -27,11 +27,11 @@ $(function() {
   const categoryRemove = function() {
     const category_head_tr = $(this).parent().parent();
     const category_id = $(".category-id", category_head_tr).val();
-    const itemsCount = $(`#items-for-category-${category_id} tr`).length - 1;
+    const itemsCount = $("#items-for-category-" + category_id + " tr").length - 1;
     let message = "Are you want to delete this category sure?";
 
     if (itemsCount > 0 ) {
-      message += `\nAll ${itemsCount} item(s) will be delete with it.`;
+      message += "\nAll " + itemsCount + " item(s) will be delete with it.";
     }
 
     return confirm(message);
@@ -85,11 +85,12 @@ $(function() {
 
       $.post("/lists.json", { 'item': { name: newItem.val(), category_id: newItem.data('category-id') }}, function(item) {
         const tr = $("#item-template tr").clone();
+        const categoryId = item.category_id || '';
+
         $(".item-id", tr).val(item.id);
         $(".item-text", tr).html(item.name);
         $(".item-edit-input", tr).val(item.name);
-        console.log("item.category_id", item.category_id, `table[data-category-id="${item.category_id}"] tr:last-of-type`);
-        $(`table[data-category-id="${item.category_id || ''}"] tr:last-of-type`).last().before(tr);
+        $('table[data-category-id="' + categoryId + '"] tr:last-of-type').last().before(tr);
         $(".item-cancel", tr).click(itemCancel);
         $(".item-edit", tr).click(itemEdit);
         $(".item-update", tr).click(itemUpdate);
