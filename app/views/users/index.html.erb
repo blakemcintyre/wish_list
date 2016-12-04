@@ -8,6 +8,8 @@
       <th>ID</th>
       <th>Name</th>
       <th>Email</th>
+      <th>Last Login</th>
+      <th>Login Count</th>
       <th></th>
     </tr>
   </thead>
@@ -18,6 +20,8 @@
         <td><%= link_to user.id, edit_user_path(user) %></td>
         <td><%= user.name %></td>
         <td><%= user.email %></td>
+        <td><%= user.last_sign_in_at %></td>
+        <td><%= user.sign_in_count %></td>
         <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
