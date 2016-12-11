@@ -11,3 +11,7 @@ body {
 .item-row {
   width: 100%;
 }
+
+#side-user-list:empty {
+  display: none;
+}
