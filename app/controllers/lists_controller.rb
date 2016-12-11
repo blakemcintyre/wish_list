@@ -13,7 +13,7 @@ class ListsController < ApplicationController
   end
 
   def edit
-    @categories = current_user.categories.undeleted
+    @categories = current_user.categories.undeleted.order(:name)
     @grouped_items = current_user.items.undeleted.includes(:category).order(id: :asc).group_by(&:category_id)
   end
 
