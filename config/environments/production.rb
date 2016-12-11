@@ -78,5 +78,5 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # Required for Devise mailers
-  config.action_mailer.default_url_options = { host: ENV[:origin_hostname] }
+  config.action_mailer.default_url_options = { host: ENV['origin_hostname'] }
 end
