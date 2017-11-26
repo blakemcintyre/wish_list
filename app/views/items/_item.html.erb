@@ -4,6 +4,10 @@
     <span class="item-show-section item-text"><%= item.name %></span>
     <input class="item-edit-section item-edit-input form-control" type="text" value="<%= item.name %>">
   </td>
+  <td class="quantity qty-cell">
+    <span class="item-show-section item-quantity"><%= item.quantity %></span>
+    <input class="item-edit-section item-edit-quantity form-control" type="number" value="<%= item.quantity %>">
+  </td>
   <td class="text-right table-actions">
     <!-- Show -->
     <a class="item-show-section item-edit text-muted">Edit</a>

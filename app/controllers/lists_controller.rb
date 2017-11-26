@@ -6,9 +6,10 @@ class ListsController < ApplicationController
 
   def index
     @user = find_param_user_from_side_bar_users
+    claimed_grouping = Item.claimed_grouping(@user.id, current_user.id)
     scoped = @user.categories.includes(:items).references(:items).order(:name).order("items.name")
-    @unclaimed_items_by_category = scoped.merge(Item.unclaimed)
-    @claimed_items_by_category = scoped.merge(Item.claimed)
+    @unclaimed_items_by_category = scoped.merge(Item.where(id: claimed_grouping.fetch(:unclaimed, [])))
+    @claimed_items_by_category = scoped.merge(Item.where(id: claimed_grouping.fetch(:claimed, [])))
     @recently_deleted_items = @user.items.includes(:category).recently_deleted
   end
 
@@ -18,7 +19,7 @@ class ListsController < ApplicationController
   end
 
   def update
-    @item.update_attributes(name: params[:item][:name])
+    @item.update_attributes(item_params)
     respond_to do |format|
       format.json { render json: @item }
     end
@@ -40,7 +41,7 @@ class ListsController < ApplicationController
   private
 
   def item_params
-    params.require(:item).permit(:name, :category_id, :user)
+    params.require(:item).permit(:name, :category_id, :user, :quantity)
   end
 
   def set_item

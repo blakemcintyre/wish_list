@@ -1,6 +1,7 @@
 class Category < ActiveRecord::Base
   belongs_to :user
   has_many :items, dependent: :destroy
+  has_many :item_claims, through: :items
 
   validates :name, presence: true
 

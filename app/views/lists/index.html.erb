@@ -11,14 +11,26 @@
           <tbody>
           <% @unclaimed_items_by_category.each do |category| %>
             <tr>
-              <td colspan="2"><h4><%= category.name %></h4></td>
+              <td><h4><%= category.name %></h4></td>
+              <td class="qty-heading">Qty</td>
+              <td class="claim-cell"></td>
             </tr>
             <% category.items.each do |item| %>
               <tr id="item-<%= item.id %>">
                 <%= form_for(ItemClaim.new(item: item)) do |f| %>
                   <%= f.hidden_field :item_id %>
                   <td><%= item.name %></td>
-                  <td class="text-right"><%= f.submit 'Claim', class: 'btn btn-default btn-xs' %></td>
+                  <td class="grey"><%= item.quantity %></td>
+                  <% if item.quantity.present? %>
+                    <td class="text-right claim-cell">
+                      <% if item.quantity > item.claimed_quantity %>
+                      <%= f.number_field :quantity, min: 1, max: (item.quantity - item.claimed_quantity), class: "form-control claim-quantity-input" %>
+                      <% end %>
+                      <%= f.submit 'Claim', class: 'btn btn-default btn-xs' %>
+                    </td>
+                  <% else %>
+                    <td></td>
+                  <% end %>
                 <% end %>
               </tr>
             <% end %>
@@ -33,14 +45,18 @@
           <tbody>
           <% @claimed_items_by_category.each do |category| %>
             <tr>
-              <td colspan="2"><h4><%= category.name %></h4></td>
+              <td><h4><%= category.name %></h4></td>
+              <td class="qty-heading">Qty</td>
+              <td class="claim-cell"></td>
             </tr>
             <% category.items.each do |item| %>
+              <% user_claim = claim = item.item_claims.detect { |ic| ic.user == current_user } %>
               <tr id="item-<%= item.id %>">
                 <td><%= item.name %></td>
-                <td class="text-right">
-                  <% if item.deleted_at.blank? && item.item_claim.user == current_user %>
-                    <%= link_to 'Unclaim', item_claim_path(item.item_claim), class: 'btn btn-danger btn-xs', method: :delete %>
+                <td><%= item.item_claims.map(&:quantity).sum %><small class="grey">/<%= item.quantity %></small></td>
+                <td class="claim-cell text-right">
+                  <% if item.deleted_at.blank? && user_claim.present? %>
+                    <%= link_to 'Unclaim', item_claim_path(claim), class: 'btn btn-danger btn-xs', method: :delete %>
                   <% end %>
                 </td>
               </tr>

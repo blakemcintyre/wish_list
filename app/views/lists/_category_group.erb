@@ -6,6 +6,9 @@
         <span class="category-show-section category-text"><%= category.name %></span>
         <input class="category-edit-section category-edit-input form-control" type="text" value="<%= category.name %>">
       </th>
+      <th class="quantity-header qty-heading qty-cell">
+        QTY
+      </th>
       <th class="text-right table-actions">
         <!-- Show -->
         <a class="category-show-section category-edit text-muted">Edit</a>
@@ -21,9 +24,11 @@
   <tbody id="items-for-category-<%= category.id %>">
     <%= render items if items %>
     <tr>
-      <td colspan="2">
+      <td>
         <input type="text" class="form-control add-item" placeholder="Add an item" data-category-id="<%= category.id %>">
       </td>
+      <td><input class="form-control add-quantity claim-quantity-input qty-cell" type="number"></td>
+      <td class="table-actions" />
     </tr>
   </tbody>
 </table>

@@ -19,6 +19,6 @@ class ItemClaimsController < ApplicationController
   private
 
   def item_claim_params
-    params.require(:item_claim).permit(:item_id)
+    params.require(:item_claim).permit(:item_id, :quantity)
   end
 end

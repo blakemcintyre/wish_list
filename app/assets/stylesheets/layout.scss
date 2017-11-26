@@ -5,13 +5,44 @@ body {
 
 .table-actions {
   white-space: nowrap;
+  width: 110px;
 }
 
 .category-row,
 .item-row {
-  width: 100%;
+  width: 80%;
+}
+
+.quantity, .quantity-header {
+  text-align: center;
+}
+
+.claim-quantity-input {
+  display: inline;
+}
+
+.qty-cell {
+  width: 55px;
+}
+
+.grey {
+  color: #6b6969;
 }
 
 #side-user-list:empty {
   display: none;
+}
+
+.claim-cell {
+  white-space: nowrap;
+  width: 50px;
+}
+
+.qty-heading {
+  vertical-align: middle;
+  width: 15px;
+}
+
+#claimable-items td, #claimed-items, td {
+  vertical-align: middle;
 }

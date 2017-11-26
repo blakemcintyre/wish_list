@@ -52,10 +52,12 @@ $(function() {
 
   const itemUpdate = function() {
     const item_li = $(this).parent().parent();
-    $.post("/lists/"+$(".item-id", item_li).val()+".json", { "_method": "PUT", "item": { "name": $(".item-edit-input", item_li).val() }}, function(item) {
+    $.post("/lists/"+$(".item-id", item_li).val()+".json", { "_method": "PUT", "item": { "name": $(".item-edit-input", item_li).val(), "quantity": $(".item-edit-quantity", item_li).val() }}, function(item) {
       const item_li = $(".item-id[value="+item.id+"]").parent();
       $(".item-text", item_li).html(item.name);
       $(".item-edit-input", item_li).val(item.name);
+      $(".item-quantity", item_li).html(item.quantity);
+      $(".item-edit-quantity", item_li).val(item.quantity);
       $(".item-edit-section", item_li).hide();
       $(".item-show-section", item_li).show();
     });
@@ -76,30 +78,45 @@ $(function() {
     }
   }
 
-  $(".add-item").keypress(function(event) {
+  const itemCreate = function(event) {
     if (event.which == 13) {
       event.preventDefault();
 
-      const newItem = $(this);
+      let newItem, quantity;
+
+      if ($(this).hasClass("add-item")) {
+        newItem = $(this);
+        quantity = $("input", newItem.parent().next());
+      } else {
+        quantity = $(this);
+        newItem = $("input", quantity.parent().prev());
+      }
+
       if (newItem.val() == '') { return; }
 
-      $.post("/lists.json", { 'item': { name: newItem.val(), category_id: newItem.data('category-id') }}, function(item) {
+      $.post("/lists.json", { 'item': { name: newItem.val(), category_id: newItem.data('category-id'), "quantity": quantity.val() }}, function(item) {
         const tr = $("#item-template tr").clone();
         const categoryId = item.category_id || '';
 
         $(".item-id", tr).val(item.id);
         $(".item-text", tr).html(item.name);
         $(".item-edit-input", tr).val(item.name);
+        $(".item-quantity", tr).html(item.quantity);
+        $(".item-edit-quantity", tr).val(item.quantity);
         $('table[data-category-id="' + categoryId + '"] tr:last-of-type').last().before(tr);
         $(".item-cancel", tr).click(itemCancel);
         $(".item-edit", tr).click(itemEdit);
         $(".item-update", tr).click(itemUpdate);
         $(".item-remove", tr).click(itemRemove);
         newItem.val('');
+        quantity.val('');
+        newItem.focus();
       });
     }
-  });
+  };
 
+  $(".add-item").keypress(itemCreate);
+  $(".add-quantity").keypress(itemCreate);
   $(".category-cancel").click(categoryCancel);
   $(".category-edit").click(categoryEdit);
   $(".category-update").click(categoryUpdate);
