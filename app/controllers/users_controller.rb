@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :verify_access
+  before_action :verify_access, except: [:new]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # GET /users

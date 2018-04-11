@@ -19,6 +19,7 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe UsersController, type: :controller do
+  include Devise::Test::ControllerHelpers
 
   # This should return the minimal set of attributes required to create a valid
   # User. As you add validations to User, be sure to

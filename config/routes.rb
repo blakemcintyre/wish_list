@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   devise_for :users
+  get "users/new", to: redirect("/")
 
   resources :lists, except: [:show] do
     get ':user_id' => 'lists#index', on: :collection
