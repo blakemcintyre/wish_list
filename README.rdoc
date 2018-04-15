@@ -1,3 +1,6 @@
-== README
+== Wish List
 
-TODO: readme, and get specs running
+TODO:
+-[ ] README with actual instructions
+-[ ] specs
+
