@@ -6,7 +6,7 @@ RSpec.describe Item, type: :model do
     let(:item) { create(:item) }
 
     context "undeleted" do
-      it "retuns items that don't have deleted_at set" do
+      it "returns items that don't have deleted_at set" do
         create(:item, deleted_at: Time.zone.now)
 
         expect(described_class.undeleted).to eq([item])
@@ -63,7 +63,7 @@ RSpec.describe Item, type: :model do
   end
 
   describe ".claimed_grouping" do
-    it "idk" do
+    it "returns items grouped as claimed and unclaimed" do
       item_user = create(:user)
       claim_user = create(:user)
       items_with_claims = create_list(:item, 2, quantity: 2, user: item_user)

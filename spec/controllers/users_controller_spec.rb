@@ -37,7 +37,7 @@ RSpec.describe UsersController, type: :controller do
   # UsersController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
-  describe "GET #index" do
+  xdescribe "GET #index" do
     it "assigns all users as @users" do
       user = User.create! valid_attributes
       get :index, {}, valid_session
@@ -45,7 +45,7 @@ RSpec.describe UsersController, type: :controller do
     end
   end
 
-  describe "GET #show" do
+  xdescribe "GET #show" do
     it "assigns the requested user as @user" do
       user = User.create! valid_attributes
       get :show, {:id => user.to_param}, valid_session
@@ -53,14 +53,14 @@ RSpec.describe UsersController, type: :controller do
     end
   end
 
-  describe "GET #new" do
+  xdescribe "GET #new" do
     it "assigns a new user as @user" do
       get :new, {}, valid_session
       expect(assigns(:user)).to be_a_new(User)
     end
   end
 
-  describe "GET #edit" do
+  xdescribe "GET #edit" do
     it "assigns the requested user as @user" do
       user = User.create! valid_attributes
       get :edit, {:id => user.to_param}, valid_session
@@ -68,7 +68,7 @@ RSpec.describe UsersController, type: :controller do
     end
   end
 
-  describe "POST #create" do
+  xdescribe "POST #create" do
     context "with valid params" do
       it "creates a new User" do
         expect {
@@ -101,7 +101,7 @@ RSpec.describe UsersController, type: :controller do
     end
   end
 
-  describe "PUT #update" do
+  xdescribe "PUT #update" do
     context "with valid params" do
       let(:new_attributes) {
         skip("Add a hash of attributes valid for your model")
@@ -142,7 +142,7 @@ RSpec.describe UsersController, type: :controller do
     end
   end
 
-  describe "DELETE #destroy" do
+  xdescribe "DELETE #destroy" do
     it "destroys the requested user" do
       user = User.create! valid_attributes
       expect {
