@@ -12,6 +12,7 @@ gem "devise", "~> 4.2"
 gem "bootstrap-sass", "~> 3.3.4"
 gem "pry-byebug", "~> 3.4"
 gem "awesome_print", "~> 1.7"
+gem "ffi", "~> 1.9.24"
 
 group :development do
   gem "listen"

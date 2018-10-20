@@ -72,7 +72,7 @@ GEM
     factory_bot_rails (4.11.1)
       factory_bot (~> 4.11.1)
       railties (>= 3.0.0)
-    ffi (1.9.23)
+    ffi (1.9.25)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
     i18n (1.1.1)
@@ -214,6 +214,7 @@ DEPENDENCIES
   bootstrap-sass (~> 3.3.4)
   devise (~> 4.2)
   factory_bot_rails
+  ffi (~> 1.9.24)
   jquery-rails (~> 4.2)
   jquery-ui-rails (~> 5.0, >= 5.0.5)
   listen
