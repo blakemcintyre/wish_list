@@ -3,6 +3,15 @@ class Item < ActiveRecord::Base
   belongs_to :user
   has_many :item_claims
 
+  scope :claimed, -> (user_id) {
+    select("items.id, items.quantity, SUM(item_claims.quantity) As claimed")
+      .undeleted
+      .joins(:item_claims)
+      .where(user_id: user_id)
+      .group("items.id, items.quantity")
+      .having("SUM(item_claims.quantity) >= items.quantity")
+    }
+  scope :unacknowledged, -> { where(claim_acknowledged: false) }
   scope :undeleted, -> { where(deleted_at: nil) }
   scope :recently_deleted, -> (limit_date = 1.week.ago) { where("deleted_at >= ?", limit_date) }
 
@@ -31,6 +40,7 @@ class Item < ActiveRecord::Base
     select("items.id, items.quantity, SUM(COALESCE(item_claims.quantity, 0)) AS claimed")
       .joins("LEFT JOIN item_claims ON items.id = item_claims.item_id")
       .where(user_id: item_user_id)
+      .unacknowledged
       .undeleted
       .group(:id)
       .each do |item|

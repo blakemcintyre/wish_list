@@ -15,7 +15,13 @@ class ListsController < ApplicationController
 
   def edit
     @categories = current_user.categories.undeleted.order(:name)
-    @grouped_items = current_user.items.undeleted.includes(:category).order(id: :asc).group_by(&:category_id)
+    @grouped_items = current_user
+      .items
+      .unacknowledged
+      .undeleted
+      .includes(:category)
+      .order(id: :asc)
+      .group_by(&:category_id)
   end
 
   def update
@@ -36,6 +42,13 @@ class ListsController < ApplicationController
   def destroy
     @item.remove
     head :no_content
+  end
+
+  def remove_claimed
+    items_ids = Item.claimed(current_user.id).pluck(:id)
+    Item.where(id: items_ids).update_all(claim_acknowledged: true)
+
+    redirect_to root_path
   end
 
   private

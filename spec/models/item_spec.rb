@@ -3,7 +3,20 @@ require 'rails_helper'
 RSpec.describe Item, type: :model do
 
   describe "scopes" do
-    let(:item) { create(:item) }
+    let(:item) { create(:item, quantity: 1) }
+
+    context "claimed" do
+      it "items that have been claimed for the user" do
+        create(:item_claim, item: item, quantity: 1)
+        create(:item_claim, quantity: 1, item: create(:item, quantity: 2))
+        create(:item)
+
+
+        items = described_class.claimed(item.user_id)
+        expect(items.length).to eq(1)
+        expect(items.first.id).to eq(item.id)
+      end
+    end
 
     context "undeleted" do
       it "returns items that don't have deleted_at set" do

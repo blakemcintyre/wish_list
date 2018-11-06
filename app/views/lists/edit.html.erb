@@ -4,7 +4,15 @@
     <% @categories.each do |category| %>
       <%= render partial: 'lists/category_group', locals: { category: category, items: @grouped_items[category.id] } %>
     <% end %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4">
     <%= link_to "Create Category", new_category_path %>
+  </div>
+  <div class="col-md-3"></div>
+  <div class="col-md-2">
+    <%= link_to "Remove Claimed", list_remove_claimed_path(current_user.id), method: :patch %>
   </div>
 </div>
 <table id="item-template" class="hidden">
