@@ -1,0 +1,16 @@
+@media print {
+  input,
+  .navbar,
+  .claim-cell > *,
+  #side-user-list {
+    display: none;
+  }
+
+  .main-content-margin-hack {
+    margin-top: auto;
+  }
+
+  .list-name {
+    display: block;
+  }
+}

@@ -3,6 +3,10 @@ body {
   min-width: 1190px;
 }
 
+.main-content-margin-hack {
+  margin-top: 50px;
+}
+
 .table-actions {
   white-space: nowrap;
   width: 110px;
@@ -13,12 +17,17 @@ body {
   width: 80%;
 }
 
-.quantity, .quantity-header {
+.quantity,
+.quantity-header {
   text-align: center;
 }
 
 .claim-quantity-input {
   display: inline;
+}
+
+.list-name {
+  display: none;
 }
 
 .qty-cell {
@@ -35,7 +44,11 @@ body {
 
 .claim-cell {
   white-space: nowrap;
-  width: 50px;
+  width: 110px;
+
+  div {
+    display: flex;
+  }
 }
 
 .qty-heading {
@@ -43,6 +56,8 @@ body {
   width: 15px;
 }
 
-#claimable-items td, #claimed-items, td {
+#claimable-items td,
+#claimed-items,
+td {
   vertical-align: middle;
 }

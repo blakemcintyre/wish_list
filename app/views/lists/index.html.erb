@@ -1,3 +1,5 @@
+<h2 class="list-name"><%= @user.name %></h2>
+
 <% if @unclaimed_items_by_category.empty? && @claimed_items_by_category.empty? %>
   Nothing has been added to the wish list yet.
 <% else %>
@@ -23,10 +25,12 @@
                   <td class="grey"><%= item.quantity %></td>
                   <% if item.quantity.present? %>
                     <td class="text-right claim-cell">
-                      <% if item.quantity > item.claimed_quantity %>
-                      <%= f.number_field :quantity, min: 1, max: (item.quantity - item.claimed_quantity), class: "form-control claim-quantity-input" %>
-                      <% end %>
-                      <%= f.submit 'Claim', class: 'btn btn-default btn-xs' %>
+                      <div>
+                        <% if item.quantity > item.claimed_quantity %>
+                          <%= f.number_field :quantity, min: 1, max: (item.quantity - item.claimed_quantity), class: "form-control claim-quantity-input" %>
+                        <% end %>
+                        <%= f.submit 'Claim', class: 'btn btn-default btn-xs' %>
+                      </div>
                     </td>
                   <% else %>
                     <td></td>

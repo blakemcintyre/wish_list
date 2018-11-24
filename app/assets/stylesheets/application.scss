@@ -1,5 +1,7 @@
-@import "bootstrap-sprockets";
-@import "bootstrap";
-@import "jquery-ui";
+@import 'bootstrap-sprockets';
+@import 'bootstrap';
+@import 'jquery-ui';
 
-@import "layout"
+@import 'layout';
+
+@import 'print';
