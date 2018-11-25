@@ -12,7 +12,7 @@
         <table id="claimable-items" class="table table-condensed table-hover">
           <tbody>
           <% @unclaimed_items_by_category.each do |category| %>
-            <tr>
+            <tr class="category-header">
               <td><h4><%= category.name %></h4></td>
               <td class="qty-heading">Qty</td>
               <td class="claim-cell"></td>

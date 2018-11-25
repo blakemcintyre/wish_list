@@ -1,9 +1,14 @@
 @media print {
   input,
   .navbar,
-  .claim-cell > *,
+  .claim-cell > div,
+  .claim-cell > a,
   #side-user-list {
     display: none;
+  }
+
+  body {
+    font-size: 16px;
   }
 
   .main-content-margin-hack {
@@ -12,5 +17,17 @@
 
   .list-name {
     display: block;
+  }
+
+  .category-header {
+    border-bottom: 2px solid grey;
+
+    > * {
+      vertical-align: bottom !important;
+    }
+
+    h4 {
+      font-size: 24px;
+    }
   }
 }
