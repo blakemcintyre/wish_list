@@ -1,4 +1,4 @@
-class CreateItemClaims < ActiveRecord::Migration
+class CreateItemClaims < ActiveRecord::Migration[4.2]
   def change
     create_table :item_claims do |t|
       t.references :item
