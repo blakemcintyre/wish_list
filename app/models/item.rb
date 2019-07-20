@@ -20,7 +20,7 @@ class Item < ActiveRecord::Base
     if created_at > 1.hour.ago && item_claims.empty?
       destroy
     else
-      update_attributes(deleted_at: Time.zone.now)
+      touch(:deleted_at)
     end
   end
 

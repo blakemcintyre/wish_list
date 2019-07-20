@@ -11,10 +11,10 @@ class Category < ActiveRecord::Base
   def remove
     items.each(&:remove)
 
-    if items.empty?
-      destroy
+    if items.any?(&:persisted?)
+      touch(:deleted_at)
     else
-      update_attributes(deleted_at: Time.zone.now)
+      destroy
     end
   end
 end
