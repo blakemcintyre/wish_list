@@ -1,4 +1,4 @@
-<table class="table table-condensed table-hover list-items" data-category-id="<%= category.id %>">
+<table class="table table-condensed table-hover list-items <%= sub_category ? "sub-categroy-table" : "" %>" data-category-id="<%= category.id %>">
   <thead>
     <tr class="category-row">
       <input class="category-id" type="hidden" value="<%= category.id %>">

@@ -6,15 +6,13 @@ class ListsController < ApplicationController
 
   def index
     @user = find_param_user_from_side_bar_users
-    claimed_grouping = Item.claimed_grouping(@user.id, current_user.id)
-    scoped = @user.categories.includes(:items).references(:items).order(:name).order("items.name")
-    @unclaimed_items_by_category = scoped.merge(Item.where(id: claimed_grouping.fetch(:unclaimed, [])))
-    @claimed_items_by_category = scoped.merge(Item.where(id: claimed_grouping.fetch(:claimed, [])))
-    @recently_deleted_items = @user.items.includes(:category).recently_deleted
+    @items_grouper = ItemsGrouper.new(@user, current_user)
   end
 
   def edit
-    @categories = current_user.categories.undeleted.order(:name)
+    category_scope = current_user.categories.undeleted.order(:name)
+    @categories = category_scope.is_parent
+    @sub_categories = category_scope.has_parent.group_by(&:parent_category_id)
     @grouped_items = current_user
       .items
       .unacknowledged

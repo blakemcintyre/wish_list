@@ -2,10 +2,18 @@
 <div class="row">
   <div class="col-md-8">
     <% @categories.each do |category| %>
-      <%= render partial: 'lists/category_group', locals: { category: category, items: @grouped_items[category.id] } %>
+      <%= render partial: 'lists/category_group', locals: { category: category, items: @grouped_items[category.id], sub_category: false } %>
+
+      <% @sub_categories[category.id]&.each do |sub_category| %>
+        <%= render partial: 'lists/category_group', locals: { category: sub_category, items: @grouped_items[sub_category.id], sub_category: true } %>
+      <% end %>
+
+      <%= link_to "Create Sub-Category", new_category_path(parent_category_id: category.id), class: "create-sub-category" %>
+      <br />
     <% end %>
   </div>
 </div>
+<hr />
 <div class="row">
   <div class="col-md-4">
     <%= link_to "Create Category", new_category_path %>

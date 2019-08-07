@@ -12,6 +12,17 @@ body {
   width: 110px;
 }
 
+.sub-categroy-table {
+  margin-left: 29px;
+  border-left: 1px solid grey;
+  width: calc(100% - 30px);
+}
+
+a.create-sub-category {
+  display: block;
+  margin-top: -10px;
+}
+
 .category-row,
 .item-row {
   width: 80%;
@@ -52,7 +63,7 @@ body {
 }
 
 .qty-heading {
-  vertical-align: middle;
+  vertical-align: middle !important; // TODO: find better way
   width: 15px;
 }
 
@@ -60,4 +71,8 @@ body {
 #claimed-items,
 td {
   vertical-align: middle;
+}
+
+#claim-items .sub-category-indent {
+  width: 30px;
 }

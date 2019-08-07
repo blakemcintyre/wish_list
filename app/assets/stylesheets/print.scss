@@ -11,6 +11,16 @@
     font-size: 16px;
   }
 
+  h3:nth-of-type(2) {
+    border-top: 2px dashed #000000;
+    margin-top: 50px;
+    padding-top: 35px;
+  }
+
+  .sub-category-indent {
+    border-bottom: 2px solid #FFFFFF;
+  }
+
   .main-content-margin-hack {
     margin-top: auto;
   }
@@ -28,6 +38,12 @@
 
     h4 {
       font-size: 24px;
+    }
+  }
+
+  #claimed-items {
+    .category-header {
+      border-bottom: 2px solid #cecdcd;
     }
   }
 }

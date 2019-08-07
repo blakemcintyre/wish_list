@@ -3,7 +3,8 @@ class CategoriesController < ApplicationController
   before_action :set_category, only: [:update, :destroy]
 
   def new
-    @category = Category.new(user: current_user)
+    parent_category = Category.find(params[:parent_category_id]) unless params[:parent_category_id].blank?
+    @category = Category.new(user: current_user, parent_category: parent_category)
   end
 
   def create
@@ -31,7 +32,7 @@ class CategoriesController < ApplicationController
   private
 
   def category_params
-    params.require(:category).permit(:name, :user)
+    params.require(:category).permit(:name, :user, :parent_category_id)
   end
 
   def set_category
