@@ -11,6 +11,7 @@ gem "jquery-ui-rails", "~> 5.0", ">= 5.0.5"
 gem "devise", "~> 4.2"
 gem "bootstrap-sass", "~> 3.4"
 gem "pry-byebug", "~> 3.4"
+gem "pry-rails"
 gem "awesome_print", "~> 1.7"
 gem "ffi", "~> 1.9.24"
 
