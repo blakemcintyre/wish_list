@@ -17,7 +17,7 @@
               <td class="qty-heading"><%= category.items.present? ? "Qty" : "" %></td>
               <td class="claim-cell"></td>
             </tr>
-            <% category.items.each do |item| %>
+            <% @items_grouper.items_by_category[[category.id, :unclaimed]]&.each do |item| %>
               <tr id="item-<%= item.id %>">
                 <%= form_for(ItemClaim.new(item: item)) do |f| %>
                   <%= f.hidden_field :item_id %>
@@ -26,17 +26,15 @@
                   <% if item.quantity.present? %>
                     <td class="text-right claim-cell">
                       <div>
-                        <% if item.quantity > item.claimed_quantity %>
-                          <%= f.number_field :quantity, min: 1, max: (item.quantity - item.claimed_quantity), class: "form-control claim-quantity-input" %>
-                        <% end %>
+                        <%= f.number_field :quantity, min: 1, max: item.quantity_remaining, class: "form-control claim-quantity-input" %>
                         <%= f.submit 'Claim', class: 'btn btn-default btn-xs' %>
                       </div>
                     </td>
                   <% else %>
                     <td></td>
                   <% end %>
-                </tr>
-              <% end %>
+                <% end %>
+              </tr>
             <% end %>
             <% @items_grouper.unclaimed_sub_categories[category.id]&.each do |sub_category| %>
               <tr class="category-header">
@@ -45,7 +43,7 @@
                 <td class="qty-heading">Qty</td>
                 <td class="claim-cell"></td>
               </tr>
-              <% sub_category.items.each do |item| %>
+              <% @items_grouper.items_by_category[[sub_category.id, :unclaimed]]&.each do |item| %>
                 <tr id="item-<%= item.id %>">
                   <%= form_for(ItemClaim.new(item: item)) do |f| %>
                     <%= f.hidden_field :item_id %>
@@ -55,9 +53,7 @@
                     <% if item.quantity.present? %>
                       <td class="text-right claim-cell">
                         <div>
-                          <% if item.quantity > item.claimed_quantity %>
-                            <%= f.number_field :quantity, min: 1, max: (item.quantity - item.claimed_quantity), class: "form-control claim-quantity-input" %>
-                          <% end %>
+                          <%= f.number_field :quantity, min: 1, max: item.quantity_remaining, class: "form-control claim-quantity-input" %>
                           <%= f.submit 'Claim', class: 'btn btn-default btn-xs' %>
                         </div>
                       </td>
@@ -83,11 +79,11 @@
               <td class="qty-heading">Qty</td>
               <td class="claim-cell"></td>
             </tr>
-            <% category.items.each do |item| %>
+            <% @items_grouper.items_by_category[[category.id, :claimed]]&.each do |item| %>
               <% user_claim = item.item_claims.detect { |ic| ic.user == current_user } %>
               <tr id="item-<%= item.id %>">
                 <td colspan="2"><%= item.name %></td>
-                <td><%= item.item_claims.map(&:quantity).sum %><small class="grey">/<%= item.quantity %></small></td>
+                <td><%= item.quantity - item.quantity_remaining %><small class="grey">/<%= item.quantity %></small></td>
                 <td class="claim-cell text-right">
                   <% if item.deleted_at.blank? && user_claim.present? %>
                     <%= link_to 'Unclaim', item_claim_path(user_claim), class: 'btn btn-danger btn-xs', method: :delete %>
@@ -102,12 +98,12 @@
                 <td class="qty-heading">Qty</td>
                 <td class="claim-cell"></td>
               </tr>
-              <% sub_category.items.each do |item| %>
+              <% @items_grouper.items_by_category[[sub_category.id, :claimed]]&.each do |item| %>
                 <% user_claim = item.item_claims.detect { |ic| ic.user == current_user } %>
                 <tr id="item-<%= item.id %>">
                   <td class="sub-category-indent"></td>
                   <td><%= item.name %></td>
-                  <td><%= item.item_claims.map(&:quantity).sum %><small class="grey">/<%= item.quantity %></small></td>
+                  <td><%= item.quantity - item.quantity_remaining %><small class="grey">/<%= item.quantity %></small></td>
                   <td class="claim-cell text-right">
                     <% if item.deleted_at.blank? && user_claim.present? %>
                       <%= link_to 'Unclaim', item_claim_path(user_claim), class: 'btn btn-danger btn-xs', method: :delete %>

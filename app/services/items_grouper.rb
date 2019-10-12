@@ -8,6 +8,23 @@ class ItemsGrouper
     build_claimed
   end
 
+  def items_by_category
+    @items_by_category ||= begin
+      Item.select("
+          items.*,
+          COALESCE(SUM(item_claims.quantity) FILTER (WHERE item_claims.user_id = #{@current_user.id}), 0) AS user_claimed_quantity,
+          items.quantity - SUM(COALESCE(item_claims.quantity, 0)) AS quantity_remaining
+        ")
+        .left_outer_joins(:item_claims)
+        .where(user_id: @items_owner)
+        .unacknowledged
+        .undeleted
+        .group(:id)
+        .order(:category_id, :name)
+        .group_by { |item| [item.category_id, tag(item)] }
+    end
+  end
+
   def recently_deleted_items
     @recently_deleted_items ||= @items_owner.items.includes(:category).recently_deleted
   end
@@ -66,5 +83,13 @@ class ItemsGrouper
     end
 
     categories
+  end
+
+  def tag(item)
+    if item.quantity.nil? || (item.user_claimed_quantity.zero? && item.quantity_remaining.positive?)
+      :unclaimed
+    else
+      :claimed
+    end
   end
 end
