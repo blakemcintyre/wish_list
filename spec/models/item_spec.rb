@@ -85,10 +85,12 @@ RSpec.describe Item, type: :model do
       create(:item_claim, item: items_with_claims.last, quantity: 1)
       expected = {
         claimed: [items_with_claims.first.id, items_with_claims.last.id],
-        unclaimed: [items_with_claims.last.id, unclaimed_item.id]
+        unclaimed: [unclaimed_item.id, items_with_claims.last.id].sort
       }
 
-      expect(described_class.claimed_grouping(item_user.id, claim_user.id)).to eq(expected)
+      results = described_class.claimed_grouping(item_user.id, claim_user.id)
+      results[:unclaimed].sort!
+      expect(results).to eq(expected)
     end
   end
 end
