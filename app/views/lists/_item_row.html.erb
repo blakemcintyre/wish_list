@@ -1,0 +1,20 @@
+<tr id="item-<%= item.id %>">
+  <%= form_for(ItemClaim.new(item: item)) do |f| %>
+    <%= f.hidden_field :item_id %>
+    <% if sub_category %>
+      <td class="sub-category-indent"></td>
+    <% end %>
+    <td colspan="<%= sub_category ? 1 : 2 %>"><%= item.name %></td>
+    <td class="grey"><%= item.quantity %></td>
+    <% if item.quantity.present? %>
+      <td class="text-right claim-cell">
+        <div>
+          <%= f.number_field :quantity, min: 1, max: item.quantity_remaining, class: "form-control claim-quantity-input" %>
+          <%= f.submit 'Claim', class: 'btn btn-default btn-xs' %>
+        </div>
+      </td>
+    <% else %>
+      <td></td>
+    <% end %>
+  <% end %>
+</tr>

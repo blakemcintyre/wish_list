@@ -12,56 +12,14 @@
         <table id="claimable-items" class="table table-condensed table-hover">
           <tbody>
           <% @items_grouper.unclaimed_categories.each do |category| %>
-            <tr class="category-header">
-              <td colspan="2"><h4><%= category.name %></h4></td>
-              <td class="qty-heading"><%= category.items.present? ? "Qty" : "" %></td>
-              <td class="claim-cell"></td>
-            </tr>
+            <%= render partial: 'table_header', locals: { category: category, sub_category: false } %>
             <% @items_grouper.items_by_category[[category.id, :unclaimed]]&.each do |item| %>
-              <tr id="item-<%= item.id %>">
-                <%= form_for(ItemClaim.new(item: item)) do |f| %>
-                  <%= f.hidden_field :item_id %>
-                  <td colspan="2"><%= item.name %></td>
-                  <td class="grey"><%= item.quantity %></td>
-                  <% if item.quantity.present? %>
-                    <td class="text-right claim-cell">
-                      <div>
-                        <%= f.number_field :quantity, min: 1, max: item.quantity_remaining, class: "form-control claim-quantity-input" %>
-                        <%= f.submit 'Claim', class: 'btn btn-default btn-xs' %>
-                      </div>
-                    </td>
-                  <% else %>
-                    <td></td>
-                  <% end %>
-                <% end %>
-              </tr>
+              <%= render partial: 'item_row', locals: { item: item, sub_category: false } %>
             <% end %>
             <% @items_grouper.unclaimed_sub_categories[category.id]&.each do |sub_category| %>
-              <tr class="category-header">
-                <td class="sub-category-indent"></td>
-                <td><h5><%= sub_category.name %></h5></td>
-                <td class="qty-heading">Qty</td>
-                <td class="claim-cell"></td>
-              </tr>
+              <%= render partial: 'table_header', locals: { category: sub_category, sub_category: true } %>
               <% @items_grouper.items_by_category[[sub_category.id, :unclaimed]]&.each do |item| %>
-                <tr id="item-<%= item.id %>">
-                  <%= form_for(ItemClaim.new(item: item)) do |f| %>
-                    <%= f.hidden_field :item_id %>
-                    <td class="sub-category-indent"></td>
-                    <td><%= item.name %></td>
-                    <td class="grey"><%= item.quantity %></td>
-                    <% if item.quantity.present? %>
-                      <td class="text-right claim-cell">
-                        <div>
-                          <%= f.number_field :quantity, min: 1, max: item.quantity_remaining, class: "form-control claim-quantity-input" %>
-                          <%= f.submit 'Claim', class: 'btn btn-default btn-xs' %>
-                        </div>
-                      </td>
-                    <% else %>
-                      <td></td>
-                    <% end %>
-                  </tr>
-                <% end %>
+                <%= render partial: 'item_row', locals: { item: item, sub_category: true } %>
               <% end %>
             <% end %>
           <% end %>

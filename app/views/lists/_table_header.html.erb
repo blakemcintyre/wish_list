@@ -1,0 +1,10 @@
+<tr class="category-header">
+  <% if sub_category %>
+      <td class="sub-category-indent"></td>
+      <td><h5><%= category.name %></h5></td>
+    <% else %>
+      <td colspan="2"><h4><%= category.name %></h4></td>
+    <% end %>
+  <td class="qty-heading"><%= category.items.present? ? "Qty" : "" %></td>
+  <td class="claim-cell"></td>
+</tr>
