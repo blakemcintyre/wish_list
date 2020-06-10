@@ -5,7 +5,7 @@
       <% if user == @user %>
         <%= user.name %>
       <% else %>
-        <a href="/lists/<%= user.id %>"><%= user.name %></a>
+        <%= link_to user.name, list_path(id: user.id) %>
       <% end %>
     </li>
   <% end %>
