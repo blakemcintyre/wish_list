@@ -1,6 +1,6 @@
 class Category < ActiveRecord::Base
   belongs_to :user
-  belongs_to :parent_category, class_name: 'Category'
+  belongs_to :parent_category, class_name: 'Category', optional: true
   has_many :items, dependent: :destroy
   has_many :item_claims, through: :items
 
