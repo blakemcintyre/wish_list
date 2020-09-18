@@ -43,8 +43,7 @@ class ListsController < ApplicationController
   end
 
   def remove_claimed
-    items_ids = Item.claimed(current_user.id).pluck(:id)
-    Item.where(id: items_ids).update_all(claim_acknowledged: true)
+    ClaimedRemover.new(current_user).process
 
     redirect_to root_path
   end

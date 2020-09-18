@@ -1,16 +1,15 @@
 class Item < ActiveRecord::Base
   belongs_to :category
   belongs_to :user
-  has_many :item_claims
+  has_many :item_claims, dependent: :delete_all
 
-  scope :claimed, -> (user_id) {
-    select("items.id, items.quantity, SUM(item_claims.quantity) As claimed")
+  scope :claimed_with_quantity_sum, -> (user_id) {
+    select("items.*, SUM(item_claims.quantity) AS claimed_qty")
       .undeleted
       .joins(:item_claims)
       .where(user_id: user_id)
-      .group("items.id, items.quantity")
-      .having("SUM(item_claims.quantity) >= items.quantity")
-    }
+      .group(*column_names)
+  }
   scope :unacknowledged, -> { where(claim_acknowledged: false) }
   scope :undeleted, -> { where(deleted_at: nil) }
   scope :recently_deleted, -> (limit_date = 1.week.ago) { where("deleted_at >= ?", limit_date) }
