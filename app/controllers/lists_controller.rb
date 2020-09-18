@@ -15,7 +15,6 @@ class ListsController < ApplicationController
     @sub_categories = category_scope.has_parent.group_by(&:parent_category_id)
     @grouped_items = current_user
       .items
-      .unacknowledged
       .undeleted
       .includes(:category)
       .order(id: :asc)

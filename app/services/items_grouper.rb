@@ -17,7 +17,6 @@ class ItemsGrouper
         ")
         .left_outer_joins(:item_claims)
         .where(user_id: @items_owner)
-        .unacknowledged
         .undeleted
         .group(:id)
         .order(:category_id, :name)
