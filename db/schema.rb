@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_24_013522) do
+ActiveRecord::Schema.define(version: 2020_09_18_013701) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,7 +45,6 @@ ActiveRecord::Schema.define(version: 2020_06_24_013522) do
     t.datetime "deleted_at"
     t.integer "category_id"
     t.integer "quantity", default: 1
-    t.boolean "claim_acknowledged", default: false
     t.index ["category_id"], name: "index_items_on_category_id"
     t.index ["user_id"], name: "index_items_on_user_id"
   end
