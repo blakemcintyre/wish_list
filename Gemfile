@@ -3,7 +3,7 @@ source "https://rubygems.org"
 ruby "2.6.3"
 
 gem "rails", "~> 6.0.3"
-gem "pg", "~> 0.19"
+gem "pg", "~> 1.2.3"
 gem "sass-rails", "~> 5.0"
 gem "uglifier", ">= 3.0.3"
 gem "jquery-rails", "~> 4.2"
