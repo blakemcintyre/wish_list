@@ -27,5 +27,4 @@ end
 group :test do
   gem "factory_bot_rails"
   gem "rspec-rails", "~> 3.5.0"
-  gem "shoulda", "~> 3.5"
 end
