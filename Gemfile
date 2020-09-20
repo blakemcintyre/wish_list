@@ -17,7 +17,7 @@ gem "ffi", "~> 1.9.24"
 
 group :development do
   gem "listen"
-  gem "web-console", "~> 2.0"
+  gem "web-console", "~> 4.0.4"
 end
 
 group :development, :test do
