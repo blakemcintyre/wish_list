@@ -1,5 +1,5 @@
 <tr id="item-<%= item.id %>">
-  <%= form_for(ItemClaim.new(item: item)) do |f| %>
+  <%= form_for(item.item_claims.build) do |f| %>
     <%= f.hidden_field :item_id %>
     <% if sub_category %>
       <td class="sub-category-indent"></td>

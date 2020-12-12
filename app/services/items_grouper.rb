@@ -20,7 +20,10 @@ class ItemsGrouper
         .undeleted
         .group(:id)
         .order(:category_id, :name)
-        .group_by { |item| [item.category_id, tag(item)] }
+        .each_with_object(Hash.new { |h, k| h[k] = [] }) do |item, by_category|
+          by_category[[item.category_id, :claimed]] << item if item.quantity.present? && item.quantity_remaining < item.quantity
+          by_category[[item.category_id, :unclaimed]] << item if item.quantity.nil? || item.quantity_remaining.positive?
+        end
     end
   end
 
@@ -82,13 +85,5 @@ class ItemsGrouper
     end
 
     categories
-  end
-
-  def tag(item)
-    if item.quantity.nil? || (item.user_claimed_quantity.zero? && item.quantity_remaining.positive?)
-      :unclaimed
-    else
-      :claimed
-    end
   end
 end

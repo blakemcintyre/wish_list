@@ -120,20 +120,26 @@ RSpec.describe ItemsGrouper, type: :model do
   end
 
   describe '#items_by_category' do
+    subject(:items_by_category) { instance.items_by_category }
+
     it 'returns items grouped by category and tag' do
       expected = {
-        [cat1.id, :unclaimed] => [item1],
         [cat1.id, :claimed] => [item7],
-        [cat1_sub1.id, :unclaimed] => [item2],
+        [cat1.id, :unclaimed] => [item1],
         [cat1_sub1.id, :claimed] => [item8],
+        [cat1_sub1.id, :unclaimed] => [item2],
+        [cat2.id, :claimed] => [item4, item9],
         [cat2.id, :unclaimed] => [item3, item4],
-        [cat2.id, :claimed] => [item9],
         [cat3_sub1.id, :unclaimed] => [item5],
         [cat3_sub2.id, :unclaimed] => [item6],
         [cat4.id, :claimed] => [item10],
         [cat4_sub1.id, :claimed] => [item11]
       }
-      expect(instance.items_by_category).to eq(expected)
+      expect(items_by_category.keys).to match_array(expected.keys)
+
+      items_by_category.each do |key, items|
+        expect(items).to match_array(expected[key])
+      end
     end
   end
 end
