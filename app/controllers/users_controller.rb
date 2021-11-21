@@ -13,6 +13,8 @@ class UsersController < ApplicationController
 
   # GET /users/new
   def new
+    return redirect_to '/' unless current_user&.admin?
+
     @user = User.new
   end
 
