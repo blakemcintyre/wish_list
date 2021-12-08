@@ -74,23 +74,4 @@ RSpec.describe Item, type: :model do
       expect(item.claimed_quantity).to eq(3)
     end
   end
-
-  describe ".claimed_grouping" do
-    subject(:results) { described_class.claimed_grouping(item_user.id, claim_user.id) }
-
-    let(:item_user) { create(:user) }
-    let(:claim_user) { create(:user) }
-    let(:items_with_claims) { create_list(:item, 2, quantity: 2, user: item_user) }
-    let!(:unclaimed_item) { create(:item, user: item_user) }
-
-    before do
-      create(:item_claim, item: items_with_claims.first, user: claim_user, quantity: 2)
-      create(:item_claim, item: items_with_claims.last, quantity: 1)
-    end
-
-    it "returns items grouped as claimed and unclaimed" do
-      expect(results[:claimed]).to contain_exactly(items_with_claims.first.id, items_with_claims.last.id)
-      expect(results[:unclaimed]).to contain_exactly(unclaimed_item.id, items_with_claims.last.id)
-    end
-  end
 end

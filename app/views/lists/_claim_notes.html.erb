@@ -1,0 +1,12 @@
+<tr id="item-<%= item.id %>-claim-notes" class="claim-note-row">
+  <% if sub_category %>
+    <td class="sub-category-indent"></td>
+  <% end %>
+  <td colspan="<%= sub_category ? 3 : 4 %>" class="claim-note">
+    <ul>
+      <% item.claim_notes.compact.each do |note| %>
+        <li><%= note %></li>
+      <% end %>
+    </ul>
+  </td>
+</tr>

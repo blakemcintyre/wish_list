@@ -1,0 +1,32 @@
+<h3>Add Claim for <%= @item.name %></h3>
+
+<div class="row">
+  <div class="col-md-4">
+    <%= form_for(@item_claim) do |f| %>
+    <%= f.hidden_field :item_id %>
+    <%= f.hidden_field :user_id %>
+
+      <% unless @item_claim.errors.empty? %>
+        <ul class="bg-danger">
+          <% @item_claim.errors.full_messages.each do |error| %>
+            <li><%= error %></li>
+          <% end %>
+        </ul>
+      <% end %>
+
+      <div class="form-group">
+        <%= f.label :quantity %>
+        <%= f.number_field :quantity, min: 1, max: max_claimable_quantity(@item), required: true, class: "form-control claim-quantity-input" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :notes %>
+        <%= f.text_field :notes, class: "form-control" %>
+      </div>
+
+      <div class="form-group form-buttons">
+        <%= f.submit "Save", class: "btn btn-success btn-default" %>
+        <%= link_to "Cancel", list_path(id: @item.user_id), class: "btn btn-default" %>
+      </div>
+    <% end %>
+  </div>
+</div>

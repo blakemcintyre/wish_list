@@ -6,15 +6,6 @@
     <% end %>
     <td colspan="<%= sub_category ? 1 : 2 %>"><%= item.name %></td>
     <td class="grey"><%= item.quantity %></td>
-    <% if item.quantity.present? %>
-      <td class="text-right claim-cell">
-        <div>
-          <%= f.number_field :quantity, min: 1, max: item.quantity_remaining, class: "form-control claim-quantity-input" %>
-          <%= f.submit 'Claim', class: 'btn btn-default btn-xs' %>
-        </div>
-      </td>
-    <% else %>
-      <td></td>
-    <% end %>
+    <td><%= link_to "Claim", new_item_claim_url(item_id: item.id), class: "btn btn-primary btn-xs"%></td>
   <% end %>
 </tr>

@@ -41,13 +41,15 @@
               <% user_claim = item.item_claims.detect { |ic| ic.user == current_user } %>
               <tr id="item-<%= item.id %>">
                 <td colspan="2"><%= item.name %></td>
-                <td><%= item.quantity - item.quantity_remaining %><small class="grey">/<%= item.quantity %></small></td>
+                <td><%= item.all_claimed_quantity %><small class="grey">/<%= item.quantity || '-' %></small></td>
                 <td class="claim-cell text-right">
                   <% if item.deleted_at.blank? && user_claim.present? %>
+                    <%= link_to 'Edit', edit_item_claim_path(user_claim), class: 'btn btn-primary btn-xs' %>
                     <%= link_to 'Unclaim', item_claim_path(user_claim), class: 'btn btn-danger btn-xs', method: :delete %>
                   <% end %>
                 </td>
               </tr>
+              <%= render partial: 'claim_notes', locals: { item: item, sub_category: false } if item.claim_notes.compact.present? %>
             <% end %>
             <% @items_grouper.claimed_sub_categories[category.id]&.each do |sub_category| %>
               <tr class="category-header">
@@ -61,13 +63,15 @@
                 <tr id="item-<%= item.id %>">
                   <td class="sub-category-indent"></td>
                   <td><%= item.name %></td>
-                  <td><%= item.quantity - item.quantity_remaining %><small class="grey">/<%= item.quantity %></small></td>
+                  <td><%= item.all_claimed_quantity %><small class="grey">/<%= item.quantity || '-' %></small></td>
                   <td class="claim-cell text-right">
                     <% if item.deleted_at.blank? && user_claim.present? %>
+                      <%= link_to 'Edit', edit_item_claim_path(user_claim), class: 'btn btn-primary btn-xs' %>
                       <%= link_to 'Unclaim', item_claim_path(user_claim), class: 'btn btn-danger btn-xs', method: :delete %>
                     <% end %>
                   </td>
                 </tr>
+                <%= render partial: 'claim_notes', locals: { item: item, sub_category: true } if item.claim_notes.compact.present? %>
               <% end %>
             <% end %>
           <% end %>

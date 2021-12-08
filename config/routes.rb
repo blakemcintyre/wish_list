@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     patch :remove_claimed
   end
 
-  resources :item_claims, only: [:create, :destroy]
+  resources :item_claims, except: [:index, :show]
   resources :categories, only: [:create, :new, :update, :destroy]
   resources :users
 

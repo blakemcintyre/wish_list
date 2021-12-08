@@ -10,6 +10,10 @@ class Category < ActiveRecord::Base
   scope :is_parent, -> { where(parent_category_id: nil) }
   scope :has_parent, -> { where.not(parent_category_id: nil) }
 
+  def <=>(other)
+    self[:name] <=> other.name
+  end
+
   # If the category has no items then it's safe to just delete it
   def remove
     items.each(&:remove)

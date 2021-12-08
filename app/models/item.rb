@@ -27,24 +27,4 @@ class Item < ActiveRecord::Base
 
     @claimed_quantity ||= ItemClaim.where(item_id: id).sum(:quantity)
   end
-
-  def self.claimed_grouping(item_user_id, claim_user_id)
-    item_ids = { claimed: [], unclaimed: [] }
-    excluded_ids = ItemClaim.joins(:item)
-      .where(user_id: claim_user_id, items: { user_id: item_user_id })
-      .merge(Item.undeleted)
-      .pluck(:item_id)
-
-    select("items.id, items.quantity, SUM(COALESCE(item_claims.quantity, 0)) AS claimed")
-      .joins("LEFT JOIN item_claims ON items.id = item_claims.item_id")
-      .where(user_id: item_user_id)
-      .undeleted
-      .group(:id)
-      .each do |item|
-        item_ids[:unclaimed] << item.id if item.quantity.nil? || (item.claimed < item.quantity && !excluded_ids.include?(item.id))
-        item_ids[:claimed] << item.id if item.quantity.present? && item.claimed > 0
-      end
-
-    item_ids
-  end
 end

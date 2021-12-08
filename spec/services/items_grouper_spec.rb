@@ -37,9 +37,6 @@ require 'rails_helper'
 # - Cat 1 -
 #   - Item 12 (recent)
 #   - Item 13 (not recent)
-# TODO: more deleted?
-
-# TODO: check items
 
 RSpec.describe ItemsGrouper, type: :model do
   let(:items_owner) { create(:user) }
@@ -68,6 +65,7 @@ RSpec.describe ItemsGrouper, type: :model do
   let!(:item13) { create(:item, user: items_owner, category: cat1, deleted_at: 2.months.ago) }
 
   before do
+    create(:item_claim, item: item3, user: claim_only_user, quantity: 2)
     create(:item_claim, item: item4, user: claim_only_user, quantity: 1)
     create(:item_claim, item: item7, user: viewing_user)
     create(:item_claim, item: item8, user: claim_only_user)
@@ -92,13 +90,19 @@ RSpec.describe ItemsGrouper, type: :model do
 
   describe '#@unclaimed_sub_categories' do
     it 'returns sub categories with showable items' do
-      expect(instance.unclaimed_sub_categories).to eq(cat1.id => [cat1_sub1], cat3.id => [cat3_sub1, cat3_sub2])
+      expect(instance.unclaimed_sub_categories).to eq(
+        cat1.id => SortedSet.new([cat1_sub1]),
+        cat3.id => SortedSet.new([cat3_sub1, cat3_sub2])
+      )
     end
   end
 
   describe '#@claimed_sub_categories' do
     it 'returns sub categories with showable items' do
-      expect(instance.claimed_sub_categories).to eq(cat1.id => [cat1_sub1], cat4.id => [cat4_sub1])
+      expect(instance.claimed_sub_categories).to eq(
+        cat1.id => SortedSet.new([cat1_sub1]),
+        cat4.id => SortedSet.new([cat4_sub1])
+      )
     end
   end
 
@@ -128,7 +132,7 @@ RSpec.describe ItemsGrouper, type: :model do
         [cat1.id, :unclaimed] => [item1],
         [cat1_sub1.id, :claimed] => [item8],
         [cat1_sub1.id, :unclaimed] => [item2],
-        [cat2.id, :claimed] => [item4, item9],
+        [cat2.id, :claimed] => [item3, item4, item9],
         [cat2.id, :unclaimed] => [item3, item4],
         [cat3_sub1.id, :unclaimed] => [item5],
         [cat3_sub2.id, :unclaimed] => [item6],

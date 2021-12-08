@@ -63,7 +63,7 @@ a.create-sub-category {
 }
 
 .qty-heading {
-  vertical-align: middle !important; // TODO: find better way
+  vertical-align: middle !important; /* TODO: find better way */
   width: 15px;
 }
 
@@ -75,4 +75,9 @@ td {
 
 #claim-items .sub-category-indent {
   width: 30px;
+}
+
+div.form-buttons {
+  display: flex;
+  justify-content: space-between;
 }

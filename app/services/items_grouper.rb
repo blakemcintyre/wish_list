@@ -1,30 +1,15 @@
 class ItemsGrouper
-  attr_reader :unclaimed_sub_categories, :unclaimed_categories, :claimed_sub_categories, :claimed_categories
+  attr_reader :unclaimed_sub_categories, :unclaimed_categories, :claimed_sub_categories, :claimed_categories, :items_by_category
 
   def initialize(items_owner, current_user)
     @items_owner = items_owner
     @current_user = current_user
-    build_unclaimed
-    build_claimed
-  end
+    @claimed_categories = SortedSet.new
+    @unclaimed_categories = SortedSet.new
+    @claimed_sub_categories = Hash.new { |h, k| h[k] = SortedSet.new }
+    @unclaimed_sub_categories = Hash.new { |h, k| h[k] = SortedSet.new }
 
-  def items_by_category
-    @items_by_category ||= begin
-      Item.select("
-          items.*,
-          COALESCE(SUM(item_claims.quantity) FILTER (WHERE item_claims.user_id = #{@current_user.id}), 0) AS user_claimed_quantity,
-          items.quantity - SUM(COALESCE(item_claims.quantity, 0)) AS quantity_remaining
-        ")
-        .left_outer_joins(:item_claims)
-        .where(user_id: @items_owner)
-        .undeleted
-        .group(:id)
-        .order(:category_id, :name)
-        .each_with_object(Hash.new { |h, k| h[k] = [] }) do |item, by_category|
-          by_category[[item.category_id, :claimed]] << item if item.quantity.present? && item.quantity_remaining < item.quantity
-          by_category[[item.category_id, :unclaimed]] << item if item.quantity.nil? || item.quantity_remaining.positive?
-        end
-    end
+    build_items_and_categories
   end
 
   def recently_deleted_items
@@ -37,53 +22,59 @@ class ItemsGrouper
 
   private
 
-  def build_unclaimed
-    @unclaimed_categories, @unclaimed_sub_categories = split_parent_and_sub_categories(:unclaimed)
-  end
+  def build_items_and_categories
+    @items_by_category = items_query.each_with_object(Hash.new { |h, k| h[k] = [] }) do |item, by_category|
+      if item.all_claimed_quantity.positive?
+        by_category[[item.category_id, :claimed]] << item
+        add_claimed_category(item.category_id)
+      end
 
-  def build_claimed
-    @claimed_categories, @claimed_sub_categories = split_parent_and_sub_categories(:claimed)
-  end
-
-  def split_parent_and_sub_categories(claimed_grouping_key)
-    all_categories = fetch_categories(claimed_grouping_key)
-    sub_categories = group_sub_categories_by_parent(all_categories)
-    categories = filter_out_sub_categories(all_categories)
-    categories = append_missing_parent_categories(categories, sub_categories)
-    categories.sort! { |a, b| a.name <=> b.name }
-    [categories, sub_categories]
-  end
-
-  def fetch_categories(claimed_grouping_key)
-    @items_owner
-      .categories
-      .includes(:items)
-      .references(:items)
-      .merge(Item.where(id: claimed_grouping.fetch(claimed_grouping_key, [])))
-      .order(:name, "items.name")
-  end
-
-  def claimed_grouping
-    @claimed_grouping ||= Item.claimed_grouping(@items_owner.id, @current_user.id)
-  end
-
-  def group_sub_categories_by_parent(categories)
-    categories.select do |category|
-      category.parent_category_id.present?
-    end.group_by(&:parent_category_id)
-  end
-
-  def filter_out_sub_categories(categories)
-    categories.reject { |category| category.parent_category_id.present? }
-  end
-
-  # Ensure that parent categories that have no direct items are listed
-  def append_missing_parent_categories(categories, sub_categories)
-    sub_categories.each do |parent_category_id, sub_cats|
-      next if categories.include?(sub_cats.first.parent_category)
-      categories.push(sub_cats.first.parent_category)
+      if item.user_claimed_quantity.zero? && (item.quantity.nil? || item.quantity_remaining&.positive?)
+        by_category[[item.category_id, :unclaimed]] << item
+        add_unclaimed_category(item.category_id)
+      end
     end
+  end
 
-    categories
+  def items_query
+    Item.select("
+        items.*,
+        COALESCE(SUM(item_claims.quantity) FILTER (WHERE item_claims.user_id = #{@current_user.id}), 0) AS user_claimed_quantity,
+        COALESCE(SUM(item_claims.quantity), 0) AS all_claimed_quantity,
+        items.quantity - SUM(COALESCE(item_claims.quantity, 0)) AS quantity_remaining,
+        ARRAY_AGG(item_claims.notes) AS claim_notes
+      ")
+      .left_outer_joins(:item_claims)
+      .where(user_id: @items_owner)
+      .undeleted
+      .group(:id)
+      .order(:category_id, :name)
+  end
+
+  def add_claimed_category(category_id)
+    add_category_grouping(category_id, @claimed_categories, @claimed_sub_categories)
+  end
+
+  def add_unclaimed_category(category_id)
+    add_category_grouping(category_id, @unclaimed_categories, @unclaimed_sub_categories)
+  end
+
+  def add_category_grouping(category_id, primary_categories, sub_categories)
+    category = categories[category_id]
+
+    if category.parent_category_id.blank?
+      primary_categories << category
+    else
+      sub_categories[category.parent_category_id] << category
+      primary_categories << category.parent_category
+    end
+  end
+
+  def categories
+    @categories ||= Category
+      .joins(:items)
+      .includes(:parent_category)
+      .merge(Item.undeleted)
+      .index_by(&:id)
   end
 end
