@@ -1,8 +1,8 @@
 source "https://rubygems.org"
 
-ruby "2.7.2"
+ruby "2.7.3"
 
-gem "rails", "~> 6.0.4.6"
+gem "rails", "~> 6.0.4.7"
 gem "pg", "~> 1.2.3"
 gem "sass-rails", "~> 5.0"
 gem "uglifier", ">= 3.0.3"
@@ -13,7 +13,7 @@ gem "bootstrap-sass", "~> 3.4"
 gem "pry-byebug", "~> 3.4"
 gem "pry-rails"
 gem "awesome_print", "~> 1.7"
-gem "ffi", "~> 1.9.24"
+gem "ffi", "~> 1.15.5"
 
 group :development do
   gem "listen"
