@@ -4,7 +4,7 @@ ruby "2.7.6"
 
 gem "rails", "~> 6.0.4.7"
 gem "pg", "~> 1.2.3"
-gem "sass-rails", "~> 5.0"
+gem "sassc-rails"
 gem "uglifier", ">= 3.0.3"
 gem "jquery-rails", "~> 4.2"
 gem "jquery-ui-rails", "~> 5.0", ">= 5.0.5"
