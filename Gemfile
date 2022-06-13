@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby "2.7.6"
+ruby "3.0.4"
 
 gem "rails", "~> 6.0.4.8"
 gem "pg", "~> 1.2.3"
@@ -14,10 +14,12 @@ gem "pry-byebug", "~> 3.4"
 gem "pry-rails"
 gem "awesome_print", "~> 1.7"
 gem "ffi", "~> 1.15.5"
+gem "sorted_set"
 
 group :development do
   gem "listen"
   gem "web-console", "~> 4.0.4"
+  gem "puma"
 end
 
 group :development, :test do

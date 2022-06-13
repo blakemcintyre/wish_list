@@ -121,6 +121,8 @@ GEM
       pry (~> 0.13.0)
     pry-rails (0.3.9)
       pry (>= 0.10.4)
+    puma (5.6.4)
+      nio4r (~> 2.0)
     racc (1.6.0)
     rack (2.2.3.1)
     rack-test (1.1.0)
@@ -155,6 +157,7 @@ GEM
     rb-fsevent (0.11.1)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
+    rbtree (0.4.5)
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
@@ -183,6 +186,10 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
+    set (1.0.2)
+    sorted_set (1.0.3)
+      rbtree
+      set (~> 1.0)
     spring (4.0.0)
     sprockets (4.0.3)
       concurrent-ruby (~> 1.0)
@@ -225,15 +232,17 @@ DEPENDENCIES
   pg (~> 1.2.3)
   pry-byebug (~> 3.4)
   pry-rails
+  puma
   rails (~> 6.0.4.8)
   rspec-rails (~> 4.0.1)
   sassc-rails
+  sorted_set
   spring
   uglifier (>= 3.0.3)
   web-console (~> 4.0.4)
 
 RUBY VERSION
-   ruby 2.7.6p219
+   ruby 3.0.4p208
 
 BUNDLED WITH
-   2.3.11
+   2.3.15
