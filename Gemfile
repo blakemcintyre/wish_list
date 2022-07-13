@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 ruby "3.0.4"
 
-gem "rails", "~> 6.0.4.8"
+gem "rails", "~> 6.0.5.1"
 gem "pg", "~> 1.2.3"
 gem "sassc-rails"
 gem "uglifier", ">= 3.0.3"
