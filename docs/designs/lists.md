@@ -14,7 +14,7 @@ Change the association of categories/items from users to a list which can be upd
 - `id` int
 - `list_id` int
 - `user_id` int
-- `spoilers` boolean (flag to indicate if same user can see claim view)
+- `claimable` boolean (flag to indicate if same user can see claim view)
 
 ### Update categories
 - Add `list_id` int
