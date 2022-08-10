@@ -5,10 +5,11 @@ Rails.application.routes.draw do
     get ":user_id" => "lists#index", on: :collection
 
     patch :remove_claimed
+
+    resources :categories, only: [:create, :new, :update, :destroy]
   end
 
   resources :item_claims, except: [:index, :show]
-  resources :categories, only: [:create, :new, :update, :destroy]
   resources :users
 
   root "lists#edit"

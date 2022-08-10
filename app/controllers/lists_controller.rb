@@ -10,7 +10,8 @@ class ListsController < ApplicationController
   end
 
   def edit
-    category_scope = current_user.categories.undeleted.order(:name)
+    @list = current_user.lists.first
+    category_scope = @list.categories.undeleted.order(:name)
     @categories = category_scope.is_parent
     @sub_categories = category_scope.has_parent.group_by(&:parent_category_id)
     @grouped_items = current_user
@@ -50,7 +51,7 @@ class ListsController < ApplicationController
   private
 
   def item_params
-    params.require(:item).permit(:name, :category_id, :user, :quantity)
+    params.require(:item).permit(:name, :category_id, :user, :quantity, :list)
   end
 
   def set_item

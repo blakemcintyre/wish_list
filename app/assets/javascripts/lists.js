@@ -21,7 +21,7 @@ $(function() {
       .parent()
       .parent();
     $.post(
-      '/categories/' + $('.category-id', category_li).val() + '.json',
+      '/lists/' + $('#id').val() + '/categories/' + $('.category-id', category_li).val() + '.json',
       {
         _method: 'PUT',
         category: { name: $('.category-edit-input', category_li).val() }
