@@ -1,8 +1,8 @@
 class ItemsGrouper
   attr_reader :unclaimed_sub_categories, :unclaimed_categories, :claimed_sub_categories, :claimed_categories, :items_by_category
 
-  def initialize(items_owner, current_user)
-    @items_owner = items_owner
+  def initialize(list, current_user)
+    @list = list
     @current_user = current_user
     @claimed_categories = SortedSet.new
     @unclaimed_categories = SortedSet.new
@@ -13,7 +13,7 @@ class ItemsGrouper
   end
 
   def recently_deleted_items
-    @recently_deleted_items ||= @items_owner.items.includes(:category).recently_deleted
+    @recently_deleted_items ||= @list.items.includes(:category).recently_deleted
   end
 
   def empty?
@@ -45,7 +45,7 @@ class ItemsGrouper
         ARRAY_AGG(item_claims.notes) AS claim_notes
       ")
       .left_outer_joins(:item_claims)
-      .where(user_id: @items_owner)
+      .where(list_id: @list)
       .undeleted
       .group(:id)
       .order(:category_id, :name)

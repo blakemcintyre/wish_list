@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     patch :remove_claimed
 
     resources :categories, only: [:create, :new, :update, :destroy]
+    get 'claimable', to: 'item_claims#index'
   end
 
   resources :item_claims, except: [:index, :show]

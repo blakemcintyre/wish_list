@@ -1,6 +1,11 @@
 class ItemClaimsController < ApplicationController
   respond_to :json
 
+  def index
+    @list = List.find(params[:list_id])
+    @items_grouper = ItemsGrouper.new(@list, current_user)
+  end
+
   def new
     @item = Item.find(params[:item_id])
     @item_claim = current_user.item_claims.new(item_id: params[:item_id])

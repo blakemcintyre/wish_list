@@ -5,7 +5,7 @@
       <% if user == @user %>
         <%= user.name %>
       <% else %>
-        <%= link_to user.name, list_path(id: user.id) %>
+        <%= link_to user.name, list_claimable_path(user.id) %>
       <% end %>
     </li>
   <% end %>
