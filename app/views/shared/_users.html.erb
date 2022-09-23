@@ -1,11 +1,12 @@
-<% if @side_bar_users.present? %>
+<%# TODO: not users any more %>
+<% if @side_bar_lists.present? %>
   <ul class="list-unstyled">
-  <% @side_bar_users.each do |user| %>
+  <% @side_bar_lists.each do |list| %>
     <li>
-      <% if user == @user %>
-        <%= user.name %>
+      <% if list == @list %>
+        <%= list.name %>
       <% else %>
-        <%= link_to user.name, list_claimable_path(user.id) %>
+        <%= link_to list.name, list_claimable_path(list.id) %>
       <% end %>
     </li>
   <% end %>

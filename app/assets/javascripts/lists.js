@@ -136,6 +136,7 @@ $(function() {
         '/lists.json',
         {
           item: {
+            list_id: $('#id').val(),
             name: newItem.val(),
             category_id: newItem.data('category-id'),
             quantity: quantity.val()

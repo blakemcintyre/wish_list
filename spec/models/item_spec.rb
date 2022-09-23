@@ -6,13 +6,13 @@ RSpec.describe Item, type: :model do
     let(:item) { create(:item, quantity: 1) }
 
     context "claimed_with_quantity_sum" do
-      it "items that have claim records for the user" do
+      it "items that have claim records for the list" do
         create(:item_claim, item: item, quantity: 1)
         create(:item_claim, quantity: 1, item: create(:item, quantity: 2))
         create(:item)
 
 
-        items = described_class.claimed_with_quantity_sum(item.user_id)
+        items = described_class.claimed_with_quantity_sum(item.list_id)
         expect(items.length).to eq(1)
         expect(items.first.id).to eq(item.id)
       end

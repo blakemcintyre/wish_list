@@ -5,11 +5,11 @@ class CategoriesController < ApplicationController
 
   def new
     parent_category = @list.categories.find(params[:parent_category_id]) unless params[:parent_category_id].blank?
-    @category = @list.categories.new(user: current_user, parent_category: parent_category)
+    @category = @list.categories.new(list: @list, parent_category: parent_category)
   end
 
   def create
-    @category = @list.categories.build(category_params.merge(user: current_user))
+    @category = @list.categories.build(category_params.merge(list: @list))
 
     if @category.save
       redirect_to root_path
@@ -33,7 +33,7 @@ class CategoriesController < ApplicationController
   private
 
   def category_params
-    params.require(:category).permit(:name, :user, :parent_category_id)
+    params.require(:category).permit(:name, :list, :parent_category_id)
   end
 
   def set_category

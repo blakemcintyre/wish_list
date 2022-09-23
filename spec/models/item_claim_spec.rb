@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe ItemClaim, type: :model do
-  let(:user1) { create(:user) }
-  let(:user2) { create(:user) }
-  let(:item) { create(:item, user: user1) }
+  let(:list) { create(:list) }
+  let(:item) { create(:item, list: list) }
+  let(:user) { create(:user) }
 
   describe '#clear_blanks via before_save' do
-    subject(:instance) { build(:item_claim, item: item, user: user2, notes: notes) }
+    subject(:instance) { build(:item_claim, item: item, user: user, notes: notes) }
 
     before do
       instance.save

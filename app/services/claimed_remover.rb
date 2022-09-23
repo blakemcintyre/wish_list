@@ -1,6 +1,6 @@
 class ClaimedRemover
-  def initialize(user)
-    @user = user
+  def initialize(list)
+    @list = list
   end
 
   def process
@@ -11,7 +11,7 @@ class ClaimedRemover
   private
 
   def process_claims
-    Item.claimed_with_quantity_sum(@user.id).each do |item|
+    Item.claimed_with_quantity_sum(@list.id).each do |item|
       next item.destroy if item.claimed_qty >= item.quantity
 
       partially_claimed(item)
@@ -26,6 +26,6 @@ class ClaimedRemover
   end
 
   def remove_soft_deleted
-    @user.items.where.not(deleted_at: nil).destroy_all
+    @list.items.where.not(deleted_at: nil).destroy_all
   end
 end

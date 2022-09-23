@@ -1,11 +1,11 @@
 class ListsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_side_bar_users, only: [:edit, :index]
+  before_action :set_side_bar_lists, only: [:edit, :index]
   before_action :set_item, only: [:update, :destroy]
   respond_to :html, :json
 
   def index
-    @user = find_param_user_from_side_bar_users
+    @list = List.find(params[:id])
     @items_grouper = ItemsGrouper.new(@user, current_user)
   end
 
@@ -14,7 +14,7 @@ class ListsController < ApplicationController
     category_scope = @list.categories.undeleted.order(:name)
     @categories = category_scope.is_parent
     @sub_categories = category_scope.has_parent.group_by(&:parent_category_id)
-    @grouped_items = current_user
+    @grouped_items = @list
       .items
       .undeleted
       .includes(:category)
@@ -30,10 +30,17 @@ class ListsController < ApplicationController
   end
 
   def create
-    @item = Item.create(item_params.merge(user: current_user))
+    @item = Item.create(item_params)
 
     respond_to do |format|
-      format.json { render json: @item }
+      if @item.persisted?
+        format.json { render json: @item }
+      else
+        format.json {
+          render status: :unprocessable_entity,
+          json: { item: @item, errors: @item.errors.full_messages }
+        }
+      end
     end
   end
 
@@ -51,18 +58,12 @@ class ListsController < ApplicationController
   private
 
   def item_params
-    params.require(:item).permit(:name, :category_id, :user, :quantity, :list)
+    params.require(:item).permit(:name, :category_id, :user, :quantity, :list_id)
   end
 
   def set_item
-    @item = current_user.items.find(params[:id])
-  end
-
-  def set_side_bar_users
-    @side_bar_users = User.where.not(id: current_user.id).order(:name)
-  end
-
-  def find_param_user_from_side_bar_users
-    @side_bar_users.detect { |user| user.id == params[:user_id].to_i }
+    @item = Item.joins(list: [:permissions])
+      .where(list_permissions: { user_id: current_user.id })
+      .find(params[:id])
   end
 end

@@ -1,4 +1,5 @@
 class ItemClaimsController < ApplicationController
+  before_action :set_side_bar_lists, only: [:index]
   respond_to :json
 
   def index
@@ -18,7 +19,7 @@ class ItemClaimsController < ApplicationController
     @item_claim = current_user.item_claims.new(item_claim_params)
 
     if @item_claim.save
-      redirect_to "/lists/#{@item_claim.item.user_id}"
+      redirect_to list_claimable_path(@item_claim.item.list_id)
     else
       @item = @item_claim.item
       render action: :new
@@ -35,7 +36,7 @@ class ItemClaimsController < ApplicationController
     @item_claim = current_user.item_claims.find(params[:id])
 
     if @item_claim.update(item_claim_params)
-      redirect_to "/lists/#{@item_claim.item.user_id}"
+      redirect_to list_claimable_path(@item_claim.item.list_id)
     else
       render action: :edit
     end
@@ -43,11 +44,11 @@ class ItemClaimsController < ApplicationController
 
   def destroy
     item_claim = current_user.item_claims.find(params[:id])
-    source_user_id = item_claim.item.user_id
+    list_id = item_claim.item.list_id
     item_claim.destroy
     # TODO: error handling
 
-    redirect_to "/lists/#{source_user_id}"
+    redirect_to list_claimable_path(list_id)
   end
 
   private
