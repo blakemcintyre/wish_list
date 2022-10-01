@@ -15,11 +15,11 @@ gem "pry-rails"
 gem "awesome_print", "~> 1.7"
 gem "ffi", "~> 1.15.5"
 gem "sorted_set"
+gem "puma"
 
 group :development do
   gem "listen"
   gem "web-console", "~> 4.0.4"
-  gem "puma"
 end
 
 group :development, :test do
