@@ -27,7 +27,7 @@ class ItemClaimsController < ApplicationController
   end
 
   def edit
-    @item_claim = current_user.item_claims.find(params[:id])
+    @item_claim = current_user.item_claims.includes(:item).find(params[:id])
   rescue ActiveRecord::RecordNotFound
     redirect_to '/', alert: 'Item not found'
   end
