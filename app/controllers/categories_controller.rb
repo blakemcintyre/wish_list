@@ -12,7 +12,7 @@ class CategoriesController < ApplicationController
     @category = @list.categories.build(category_params.merge(list: @list))
 
     if @category.save
-      redirect_to root_path
+      redirect_to list_items_path(@list)
     else
       render action: :new
     end
@@ -27,7 +27,7 @@ class CategoriesController < ApplicationController
 
   def destroy
     @category.remove
-    redirect_to root_path
+    redirect_to list_items_path(@list)
   end
 
   private

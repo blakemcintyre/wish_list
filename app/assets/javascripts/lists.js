@@ -73,11 +73,12 @@ $(function() {
   };
 
   const itemUpdate = function() {
+    const listId = $('#id').val();
     const item_li = $(this)
       .parent()
       .parent();
     $.post(
-      '/lists/' + $('.item-id', item_li).val() + '.json',
+      `/lists/${listId}/items/${$('.item-id', item_li).val()}.json`,
       {
         _method: 'PUT',
         item: {
@@ -101,11 +102,12 @@ $(function() {
   const itemRemove = function() {
     // TODO: switch to "undo" style
     if (confirm('Are you sure?')) {
+      const listId = $('#id').val();
       const item_li = $(this)
         .parent()
         .parent();
       $.ajax({
-        url: '/lists/' + $('.item-id', item_li).val(),
+        url: `/lists/${listId}/items/${$('.item-id', item_li).val()}`,
         type: 'DELETE',
         success: function(result) {
           item_li.remove();
@@ -118,6 +120,7 @@ $(function() {
     if (event.which == 13) {
       event.preventDefault();
 
+      const listId = $('#id').val();
       let newItem, quantity;
 
       if ($(this).hasClass('add-item')) {
@@ -133,10 +136,10 @@ $(function() {
       }
 
       $.post(
-        '/lists.json',
+        `/lists/${listId}/items.json`,
         {
           item: {
-            list_id: $('#id').val(),
+            list_id: listId,
             name: newItem.val(),
             category_id: newItem.data('category-id'),
             quantity: quantity.val()

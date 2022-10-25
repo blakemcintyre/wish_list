@@ -6,12 +6,8 @@ class ApplicationController < ActionController::Base
   private
 
   def set_side_bar_lists
-    return @side_bar_lists if defined?(@side_bar_lists)
-
-    scope = List.joins(:permissions)
-    @side_bar_lists = scope
-      .where(list_permissions: { user_id: current_user.id, claimable: true })
-      .or(scope.where.not(list_permissions: { user_id: current_user.id }))
-      .order(:name)
+    @side_bar_lists ||= List.where
+                            .not(id: ListPermission.select(:id).where(user: current_user, claimable: false))
+                            .order(:name)
   end
 end
