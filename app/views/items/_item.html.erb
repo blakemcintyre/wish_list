@@ -10,9 +10,15 @@
   </td>
   <td class="text-right table-actions">
     <!-- Show -->
-    <a class="item-show-section item-edit text-muted">Edit</a>
-    <span class="item-show-section text-muted">|</span>
-    <a class="item-show-section item-remove text-muted">Remove</a>
+    <a class="item-show-section item-edit" title="Edit">
+      <%= render partial: 'shared/icons/pencil' %>
+    </a>
+    <a class="item-show-section item-remove" title="Delete">
+      <%= render partial: 'shared/icons/trash' %>
+    </a>
+    <a class="item-show-section item-move" title="Move">
+      <%= render partial: 'shared/icons/arrows_left_right' %>
+    </a>
     <!-- Edit -->
     <a class="item-edit-section item-update text-muted">Save</a>
     <span class="item-edit-section text-muted">|</span>

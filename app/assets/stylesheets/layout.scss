@@ -19,6 +19,16 @@ ul.side-lists {
   }
 }
 
+a > svg {
+  cursor: pointer;
+}
+
+a[class*="-edit"]:hover,
+a[class*="-move"]:hover,
+a[class*="-remove"]:hover {
+  text-decoration: none;
+}
+
 .table-actions {
   white-space: nowrap;
   width: 110px;

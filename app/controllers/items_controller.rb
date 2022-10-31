@@ -1,7 +1,7 @@
 class ItemsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_side_bar_lists, only: [:edit, :index]
-  before_action :set_item, only: [:update, :destroy]
+  before_action :set_item, only: %i(edit update destroy)
   respond_to :html, :json
 
   def index
@@ -13,14 +13,20 @@ class ItemsController < ApplicationController
       .items
       .undeleted
       .includes(:category)
-      .order(id: :asc)
+      .order(:name)
       .group_by(&:category_id)
+  end
+
+  def edit
+    @lists = current_user.lists.order(:name)
+    @categories = @item.list.categories.undeleted.order(:name)
   end
 
   def update
     @item.update_attributes(item_params)
     respond_to do |format|
       format.json { render json: @item }
+      format.html { redirect_to list_items_path(@item.list_id) }
     end
   end
 
@@ -47,7 +53,7 @@ class ItemsController < ApplicationController
   private
 
   def item_params
-    params.require(:item).permit(:name, :category_id, :user, :quantity, :list_id)
+    params.require(:item).permit(:name, :category_id, :quantity, :list_id)
   end
 
   def set_item

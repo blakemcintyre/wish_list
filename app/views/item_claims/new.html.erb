@@ -25,7 +25,7 @@
 
       <div class="form-group form-buttons">
         <%= f.submit "Save", class: "btn btn-success btn-default" %>
-        <%= link_to "Cancel", list_path(id: @item.list_id), class: "btn btn-default" %>
+        <%= link_to "Cancel", list_claimable_path(@item.list_id), class: "btn btn-default" %>
       </div>
     <% end %>
   </div>

@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
 
   def set_side_bar_lists
     @side_bar_lists ||= List.where
-                            .not(id: ListPermission.select(:id).where(user: current_user, claimable: false))
+                            .not(id: ListPermission.select(:list_id).where(user: current_user, claimable: false))
                             .order(:name)
   end
 end
