@@ -1,16 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe ClaimedRemover, type: :model do
-  subject(:instance) { described_class.new(user) }
-
-  let(:user) { create(:user) }
+  subject(:instance) { described_class.new(list) }
 
   describe '#process' do
-    let!(:item1) { create(:item, quantity: 2, user: user) }
-    let(:item2) { create(:item, quantity: 2, user: user) }
-    let(:item3) { create(:item, quantity: 2, user: user) }
-    let(:item4) { create(:item, quantity: nil, user: user) }
-    let!(:item5) { create(:item, deleted_at: 1.day.ago, user: user) }
+    let(:list) { create(:list) }
+    let!(:item1) { create(:item, quantity: 2, list: list) }
+    let(:item2) { create(:item, quantity: 2, list: list) }
+    let(:item3) { create(:item, quantity: 2, list: list) }
+    let(:item4) { create(:item, quantity: nil, list: list) }
+    let!(:item5) { create(:item, deleted_at: 1.day.ago, list: list) }
 
     before do
       create_list(:item_claim, 2, item: item2, quantity: 1)

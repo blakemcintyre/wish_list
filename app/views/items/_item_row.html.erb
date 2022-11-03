@@ -5,7 +5,7 @@
       <td class="sub-category-indent"></td>
     <% end %>
     <td colspan="<%= sub_category ? 1 : 2 %>"><%= item.name %></td>
-    <td class="grey"><%= item.quantity %></td>
+    <td class="grey"><%= item.quantity.presence || render(partial: 'shared/icons/infinity') %></td>
     <td><%= link_to "Claim", new_item_claim_url(item_id: item.id), class: "btn btn-primary btn-xs"%></td>
   <% end %>
 </tr>

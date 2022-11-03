@@ -1,13 +1,13 @@
 class Item < ActiveRecord::Base
   belongs_to :category
-  belongs_to :user
+  belongs_to :list
   has_many :item_claims, dependent: :delete_all
 
-  scope :claimed_with_quantity_sum, -> (user_id) {
+  scope :claimed_with_quantity_sum, -> (list_id) {
     select("items.*, SUM(item_claims.quantity) AS claimed_qty")
       .undeleted
       .joins(:item_claims)
-      .where(user_id: user_id)
+      .where(list_id: list_id)
       .group(*column_names)
   }
   scope :undeleted, -> { where(deleted_at: nil) }

@@ -1,67 +1,77 @@
 class ListsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_side_bar_users, only: [:edit, :index]
-  before_action :set_item, only: [:update, :destroy]
+  before_action :set_side_bar_lists
+  before_action :set_list, only: %i(edit update destroy remove_claimed)
   respond_to :html, :json
 
   def index
-    @user = find_param_user_from_side_bar_users
-    @items_grouper = ItemsGrouper.new(@user, current_user)
+    @lists = list_scope.includes(permissions: [:user])
   end
 
-  def edit
-    category_scope = current_user.categories.undeleted.order(:name)
-    @categories = category_scope.is_parent
-    @sub_categories = category_scope.has_parent.group_by(&:parent_category_id)
-    @grouped_items = current_user
-      .items
-      .undeleted
-      .includes(:category)
-      .order(id: :asc)
-      .group_by(&:category_id)
-  end
-
-  def update
-    @item.update_attributes(item_params)
-    respond_to do |format|
-      format.json { render json: @item }
-    end
+  def new
+    @list = List.new
+    @permissions = [@list.permissions.build(user: current_user)]
+    @users_without_permissions = User.where.not(id: current_user.id).order(:name)
   end
 
   def create
-    @item = Item.create(item_params.merge(user: current_user))
+    @list = List.new(list_params)
 
-    respond_to do |format|
-      format.json { render json: @item }
+    if @list.save
+      redirect_to lists_path
+    else
+      render action: :create
+    end
+  end
+
+  def edit
+    @permissions = @list.permissions.includes(:user).order('users.name')
+    @users_without_permissions = User.where.not(id: @permissions.pluck(:user_id)).order(:name)
+  end
+
+  def update
+    if @list.update(list_params)
+      flash.notice = 'List updated'
+      redirect_to lists_path
+    else
+      edit
+      render action: :edit
     end
   end
 
   def destroy
-    @item.remove
-    head :no_content
+    @list.destroy
+    flash.notice = 'List deleted'
+
+    redirect_to lists_path
   end
 
   def remove_claimed
-    ClaimedRemover.new(current_user).process
+    ClaimedRemover.new(@list).process
+    flash.notice = 'Claimed items removed'
 
-    redirect_to root_path
+    redirect_to list_items_path(@list)
   end
 
   private
 
-  def item_params
-    params.require(:item).permit(:name, :category_id, :user, :quantity)
+  def list_params
+    permission_attributes = params.delete(:permission_attributes).values.each_with_object([]) do |attrs, collection|
+      next if attrs[:user_id].to_i.zero? && !attrs.key?(:id)
+
+      collection << attrs
+    end
+
+    params.require(:list).permit(:name).tap do |attrs|
+      attrs[:permissions_attributes] = permission_attributes
+    end
   end
 
-  def set_item
-    @item = current_user.items.find(params[:id])
+  def set_list
+    @list = list_scope.find(params[:id])
   end
 
-  def set_side_bar_users
-    @side_bar_users = User.where.not(id: current_user.id).order(:name)
-  end
-
-  def find_param_user_from_side_bar_users
-    @side_bar_users.detect { |user| user.id == params[:user_id].to_i }
+  def list_scope
+    current_user.lists
   end
 end

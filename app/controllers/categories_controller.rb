@@ -1,41 +1,65 @@
 class CategoriesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_category, only: [:update, :destroy]
+  before_action :set_list, except: %i(edit update)
+
+  def index
+    @categories = categories_scope.where(lists: { id: params[:list_id ] })
+    @categories = @categories.where(categories: { parent_category_id: nil }) if params[:parent_only]
+
+    respond_to do |format|
+      format.json { render json: @categories.order(:name) }
+    end
+  end
 
   def new
-    parent_category = Category.find(params[:parent_category_id]) unless params[:parent_category_id].blank?
-    @category = Category.new(user: current_user, parent_category: parent_category)
+    parent_category = @list.categories.find(params[:parent_category_id]) unless params[:parent_category_id].blank?
+    @category = @list.categories.new(list: @list, parent_category: parent_category)
   end
 
   def create
-    @category = Category.new(category_params.merge(user: current_user))
+    @category = @list.categories.build(category_params.merge(list: @list))
 
     if @category.save
-      redirect_to root_path
+      redirect_to list_items_path(@list)
     else
       render action: :new
     end
   end
 
+  def edit
+    @category = categories_scope.find(params[:id])
+    @lists = current_user.lists.order(:name)
+    @parent_categories_in_list = @category.list.categories.where(parent_category_id: nil).where.not(id: @category)
+  end
+
   def update
+    @category = categories_scope.find(params[:id])
     @category.update_attributes(category_params)
+
     respond_to do |format|
       format.json { render json: @category }
+      format.html { redirect_to list_items_path(@category.list_id) }
     end
   end
 
   def destroy
-    @category.remove
-    redirect_to root_path
+    category = @list.categories.find(params[:id])
+    category.remove
+
+    redirect_to list_items_path(@list)
   end
 
   private
 
   def category_params
-    params.require(:category).permit(:name, :user, :parent_category_id)
+    params.require(:category).permit(:name, :list, :parent_category_id)
   end
 
-  def set_category
-    @category = Category.find(params[:id])
+  def set_list
+    @list = current_user.lists.find(params[:list_id])
+  end
+
+  def categories_scope
+    Category.undeleted.joins(list: :permissions).where(list_permissions: { user_id: current_user })
   end
 end

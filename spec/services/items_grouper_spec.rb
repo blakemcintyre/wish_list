@@ -39,30 +39,30 @@ require 'rails_helper'
 #   - Item 13 (not recent)
 
 RSpec.describe ItemsGrouper, type: :model do
-  let(:items_owner) { create(:user) }
+  let(:list) { create(:list) }
   let(:viewing_user) { create(:user) }
   let(:claim_only_user) { create(:user) }
-  let!(:cat1) { create(:category, user: items_owner, name: 'Cat1') }
-  let!(:cat1_sub1) { create(:category, user: items_owner, parent_category: cat1, name: 'Cat1 Sub1') }
-  let!(:cat2) { create(:category, user: items_owner, name: 'Cat2') }
-  let!(:cat3) { create(:category, user: items_owner, name: 'Cat3') }
-  let!(:cat3_sub1) { create(:category, user: items_owner, parent_category: cat3, name: 'Cat3 Sub1') }
-  let!(:cat3_sub2) { create(:category, user: items_owner, parent_category: cat3, name: 'Cat3 Sub2') }
-  let!(:cat4) { create(:category, user: items_owner, name: 'Cat4') }
-  let!(:cat4_sub1) { create(:category, user: items_owner, parent_category: cat4, name: 'Cat4 Sub1') }
-  let!(:item1) { create(:item, user: items_owner, category: cat1) }
-  let!(:item2) { create(:item, user: items_owner, category: cat1_sub1) }
-  let!(:item3) { create(:item, user: items_owner, category: cat2, quantity: nil) }
-  let!(:item4) { create(:item, user: items_owner, category: cat2, quantity: 2) }
-  let!(:item5) { create(:item, user: items_owner, category: cat3_sub1) }
-  let!(:item6) { create(:item, user: items_owner, category: cat3_sub2) }
-  let!(:item7) { create(:item, user: items_owner, category: cat1) }
-  let!(:item8) { create(:item, user: items_owner, category: cat1_sub1) }
-  let!(:item9) { create(:item, user: items_owner, category: cat2) }
-  let!(:item10) { create(:item, user: items_owner, category: cat4) }
-  let!(:item11) { create(:item, user: items_owner, category: cat4_sub1) }
-  let!(:item12) { create(:item, user: items_owner, category: cat1, deleted_at: Time.zone.now) }
-  let!(:item13) { create(:item, user: items_owner, category: cat1, deleted_at: 2.months.ago) }
+  let!(:cat1) { create(:category, list: list, name: 'Cat1') }
+  let!(:cat1_sub1) { create(:category, list: list, parent_category: cat1, name: 'Cat1 Sub1') }
+  let!(:cat2) { create(:category, list: list, name: 'Cat2') }
+  let!(:cat3) { create(:category, list: list, name: 'Cat3') }
+  let!(:cat3_sub1) { create(:category, list: list, parent_category: cat3, name: 'Cat3 Sub1') }
+  let!(:cat3_sub2) { create(:category, list: list, parent_category: cat3, name: 'Cat3 Sub2') }
+  let!(:cat4) { create(:category, list: list, name: 'Cat4') }
+  let!(:cat4_sub1) { create(:category, list: list, parent_category: cat4, name: 'Cat4 Sub1') }
+  let!(:item1) { create(:item, list: list, category: cat1) }
+  let!(:item2) { create(:item, list: list, category: cat1_sub1) }
+  let!(:item3) { create(:item, list: list, category: cat2, quantity: nil) }
+  let!(:item4) { create(:item, list: list, category: cat2, quantity: 2) }
+  let!(:item5) { create(:item, list: list, category: cat3_sub1) }
+  let!(:item6) { create(:item, list: list, category: cat3_sub2) }
+  let!(:item7) { create(:item, list: list, category: cat1) }
+  let!(:item8) { create(:item, list: list, category: cat1_sub1) }
+  let!(:item9) { create(:item, list: list, category: cat2) }
+  let!(:item10) { create(:item, list: list, category: cat4) }
+  let!(:item11) { create(:item, list: list, category: cat4_sub1) }
+  let!(:item12) { create(:item, list: list, category: cat1, deleted_at: Time.zone.now) }
+  let!(:item13) { create(:item, list: list, category: cat1, deleted_at: 2.months.ago) }
 
   before do
     create(:item_claim, item: item3, user: claim_only_user, quantity: 2)
@@ -74,7 +74,7 @@ RSpec.describe ItemsGrouper, type: :model do
     create(:item_claim, item: item11, user: claim_only_user)
   end
 
-  subject(:instance) { described_class.new(items_owner, viewing_user) }
+  subject(:instance) { described_class.new(list, viewing_user) }
 
   describe '#unclaimed_categories' do
     it 'returns categories with showable items' do

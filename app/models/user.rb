@@ -6,4 +6,7 @@ class User < ActiveRecord::Base
   has_many :categories
   has_many :items
   has_many :item_claims
+
+  has_many :list_permissions
+  has_many :lists, through: :list_permissions
 end

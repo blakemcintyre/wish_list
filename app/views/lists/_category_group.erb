@@ -11,9 +11,15 @@
       </th>
       <th class="text-right table-actions">
         <!-- Show -->
-        <a class="category-show-section category-edit text-muted">Edit</a>
-        <span class="category-show-section text-muted">|</span>
-        <a class="category-show-section category-remove text-muted" rel="nofollow" data-method="delete" href="<%= category_path(category) %>">Remove</a>
+        <a class="category-show-section category-edit" title="Edit">
+          <%= render partial: 'shared/icons/pencil' %>
+        </a>
+        <a class="category-show-section category-remove" rel="nofollow" data-method="delete" href="<%= list_category_path(@list, category) %>"  title="Delete">
+          <%= render partial: 'shared/icons/trash' %>
+        </a>
+        <a class="category-show-section category-move"  title="Move">
+          <%= render partial: 'shared/icons/arrows_left_right' %>
+        </a>
         <!-- Edit -->
         <a class="category-edit-section category-update text-muted">Save</a>
         <span class="category-edit-section text-muted">|</span>

@@ -11,7 +11,7 @@
   <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a class="navbar-brand" href="/">My Wish List</a>
+        <a class="navbar-brand" href="/">Wish List</a>
       </div>
       <% if current_user %>
         <div class="collapse navbar-collapse">
@@ -29,13 +29,13 @@
   </nav>
   <div class="container-fluid main-content-margin-hack">
     <div class="row">
-      <div id="side-user-list" class="col-xs-1 col-md-1"><%= render 'shared/users' if current_user %></div>
-      <div class="col-xs-11 col-md-11">
+      <div id="side-user-list" class="col-xs-1 col-md-1"><%= render 'shared/list_links' if current_user %></div>
+      <div class="col-xs-11 col-md-11 flash-message">
         <% if notice.present? %>
-          <p class="text-primary"><%= notice %></p>
+          <p class="lead bg-success"><%= notice %></p>
         <% end %>
         <% if alert.present? %>
-          <p class="text-danger"><%= alert %></p>
+          <p class="lead bg-danger"><%= alert %></p>
         <% end %>
         <%= yield %>
       </div>

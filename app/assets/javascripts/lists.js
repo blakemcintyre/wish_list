@@ -21,7 +21,7 @@ $(function() {
       .parent()
       .parent();
     $.post(
-      '/categories/' + $('.category-id', category_li).val() + '.json',
+      '/lists/' + $('#id').val() + '/categories/' + $('.category-id', category_li).val() + '.json',
       {
         _method: 'PUT',
         category: { name: $('.category-edit-input', category_li).val() }
@@ -38,6 +38,15 @@ $(function() {
     );
     // TODO: error handling
   };
+
+  const categoryMove = function() {
+    const category_li = $(this).parent().parent();
+    const categoryId = $('.category-id', category_li).val();
+
+    if (!categoryId) return;
+
+    window.location = `/categories/${categoryId}/edit`;
+  }
 
   const categoryRemove = function() {
     const category_head_tr = $(this)
@@ -77,7 +86,7 @@ $(function() {
       .parent()
       .parent();
     $.post(
-      '/lists/' + $('.item-id', item_li).val() + '.json',
+      `/items/${$('.item-id', item_li).val()}.json`,
       {
         _method: 'PUT',
         item: {
@@ -98,14 +107,21 @@ $(function() {
     // TODO: error handling
   };
 
+  const itemMove = function() {
+    const item_li = $(this).parent().parent();
+    const itemId = $('.item-id', item_li).val();
+
+    if (!itemId) return;
+
+    window.location = `/items/${itemId}/edit`;
+  }
+
   const itemRemove = function() {
     // TODO: switch to "undo" style
     if (confirm('Are you sure?')) {
-      const item_li = $(this)
-        .parent()
-        .parent();
+      const item_li = $(this).parent().parent();
       $.ajax({
-        url: '/lists/' + $('.item-id', item_li).val(),
+        url: `/items/${$('.item-id', item_li).val()}`,
         type: 'DELETE',
         success: function(result) {
           item_li.remove();
@@ -118,6 +134,7 @@ $(function() {
     if (event.which == 13) {
       event.preventDefault();
 
+      const listId = $('#id').val();
       let newItem, quantity;
 
       if ($(this).hasClass('add-item')) {
@@ -133,9 +150,10 @@ $(function() {
       }
 
       $.post(
-        '/lists.json',
+        `/lists/${listId}/items.json`,
         {
           item: {
+            list_id: listId,
             name: newItem.val(),
             category_id: newItem.data('category-id'),
             quantity: quantity.val()
@@ -156,6 +174,7 @@ $(function() {
           $('.item-cancel', tr).click(itemCancel);
           $('.item-edit', tr).click(itemEdit);
           $('.item-update', tr).click(itemUpdate);
+          $('.item-move', tr).click(itemMove);
           $('.item-remove', tr).click(itemRemove);
           newItem.val('');
           quantity.val(1);
@@ -170,11 +189,13 @@ $(function() {
   $('.category-cancel').click(categoryCancel);
   $('.category-edit').click(categoryEdit);
   $('.category-update').click(categoryUpdate);
+  $('.category-move').click(categoryMove);
   $('.category-remove').click(categoryRemove);
   $('.category-edit-section').hide();
   $('.item-cancel').click(itemCancel);
   $('.item-edit').click(itemEdit);
   $('.item-update').click(itemUpdate);
+  $('.item-move').click(itemMove);
   $('.item-remove').click(itemRemove);
   $('.item-edit-section').hide();
 });

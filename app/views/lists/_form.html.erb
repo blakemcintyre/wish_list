@@ -1,0 +1,63 @@
+<%= form_for(@list) do |f| %>
+
+      <% unless @list.errors.empty? %>
+        <ul class="bg-danger">
+          <% @list.errors.full_messages.each do |error| %>
+            <li><%= error %></li>
+          <% end %>
+        </ul>
+      <% end %>
+
+      <div class="form-group">
+        <%= f.label :name %>
+        <%= f.text_field :name, required: true, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <label>Permissions</label>
+        <table class="form-table" id="list-permissions-table">
+          <thead>
+            <tr>
+              <th class="user-name">User</th>
+              <th class="table-input">Edit?</th>
+              <th class="table-input">Claimable?</th>
+            </tr>
+          </thead>
+          <tbody>
+          <% @permissions.map do |permission| %>
+            <%= hidden_field_tag "permission_attributes[#{permission.user_id}][id]", permission.id %>
+            <%= hidden_field_tag "permission_attributes[#{permission.user_id}][user_id]", permission.user_id %>
+            <tr>
+              <td class="user-name"><%= permission.user.name %></td>
+              <td class="table-input">
+                <%= hidden_field_tag "permission_attributes[#{permission.user_id}][_destroy]", 1 %>
+                <%= check_box_tag "permission_attributes[#{permission.user_id}][_destroy]", 0, true %>
+              </td>
+              <td class="table-input">
+                <%= hidden_field_tag "permission_attributes[#{permission.user_id}][claimable]", false %>
+                <%= check_box_tag "permission_attributes[#{permission.user_id}][claimable]", true, permission.claimable %>
+              </td>
+            </tr>
+          <% end %>
+          <% @users_without_permissions.map do |user| %>
+            <tr>
+              <td class="user-name"><%= user.name %></td>
+              <td class="table-input">
+                <%= hidden_field_tag "permission_attributes[#{user.id}][user_id]", 0 %>
+                <%= check_box_tag "permission_attributes[#{user.id}][user_id]", user.id, false %>
+              </td>
+              <td class="table-input">
+                <%= hidden_field_tag "permission_attributes[#{user.id}][claimable]", false %>
+                <%= check_box_tag "permission_attributes[#{user.id}][claimable]", true, false %>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="form-group form-buttons">
+        <%= f.submit "Save", class: "btn btn-success btn-default" %>
+        <%= link_to "Cancel", lists_path, class: "btn btn-default" %>
+      </div>
+    <% end %>

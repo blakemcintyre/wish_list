@@ -7,6 +7,28 @@ body {
   margin-top: 50px;
 }
 
+.flash-message {
+  p {
+    padding: 8px;
+  }
+}
+
+ul.side-lists {
+  li {
+    padding-top: 5px;
+  }
+}
+
+a > svg {
+  cursor: pointer;
+}
+
+a[class*="-edit"]:hover,
+a[class*="-move"]:hover,
+a[class*="-remove"]:hover {
+  text-decoration: none;
+}
+
 .table-actions {
   white-space: nowrap;
   width: 110px;
@@ -80,4 +102,48 @@ td {
 div.form-buttons {
   display: flex;
   justify-content: space-between;
+}
+
+.lists {
+  max-width: 800px;
+
+  th:last-of-type, td:last-of-type {
+    width: 140px;
+  }
+
+  a[data-method="delete"] {
+    opacity: 0.6;
+
+    &:hover {
+      color: red;
+    }
+  }
+
+  h4 {
+    padding-top: 20px;
+    padding-bottom: 10px;
+  }
+
+  .form-buttons {
+    padding-top: 5px;
+  }
+}
+
+#list-permissions-table {
+  tbody {
+    tr:hover {
+      background: linear-gradient(#ffffff, #f2f0f0);
+      border-bottom: 1px solid #d3d3d3;
+    }
+  }
+
+  .user-name {
+    padding-right: 20px;
+  }
+
+  .table-input {
+    text-align: center;
+    vertical-align: middle;
+    padding: 0 10px;
+  }
 }
