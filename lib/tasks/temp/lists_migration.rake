@@ -1,6 +1,8 @@
 namespace :temp do
   desc "Remove claimed items"
   task lists_migration: :environment do
+    return if List.count.positive?
+
     User.joins(:items)
       .having('COUNT(items.id) > 0')
       .group(:id)

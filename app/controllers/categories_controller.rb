@@ -36,6 +36,7 @@ class CategoriesController < ApplicationController
     @category = categories_scope.find(params[:id])
     @category.update_attributes(category_params)
 
+    # TODO: error handling
     respond_to do |format|
       format.json { render json: @category }
       format.html { redirect_to list_items_path(@category.list_id) }
