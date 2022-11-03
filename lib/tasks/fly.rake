@@ -10,11 +10,7 @@ namespace :fly do
   #  - changes to the filesystem made here are DISCARDED
   #  - full access to secrets, databases
   #  - failures here prevent deployment
-  # task :release => 'db:migrate' # TODO: return to this post deploy
-  task :release do
-    Rake::Task['db:migrate'].invoke
-    Rake::Task['temp:lists_migration'].invoke
-  end
+  task :release => 'db:migrate'
 
   # SERVER step:
   #  - changes to the filesystem made here are deployed
