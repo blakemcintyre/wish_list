@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+# Load postgres console to avoid out of memory error when using rails
+psql -d $DATABASE_URL
