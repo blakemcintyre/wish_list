@@ -27,19 +27,29 @@ class CategoriesController < ApplicationController
   end
 
   def edit
-    @category = categories_scope.find(params[:id])
+    @category ||= categories_scope.find(params[:id])
     @lists = current_user.lists.order(:name)
     @parent_categories_in_list = @category.list.categories.where(parent_category_id: nil).where.not(id: @category)
   end
 
   def update
     @category = categories_scope.find(params[:id])
-    @category.update_attributes(category_params)
 
-    # TODO: error handling
-    respond_to do |format|
-      format.json { render json: @category }
-      format.html { redirect_to list_items_path(@category.list_id) }
+    if @category.update_attributes(category_params)
+      @category.items.update_all(list_id: @category.list_id)
+
+      respond_to do |format|
+        format.json { render json: @category }
+        format.html { redirect_to list_items_path(@category.list_id) }
+      end
+    else
+      respond_to do |format|
+        format.json { render json: @category }
+        format.html do
+          edit
+          render action: :edit
+        end
+      end
     end
   end
 
