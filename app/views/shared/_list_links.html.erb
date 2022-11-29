@@ -7,6 +7,9 @@
       <% else %>
         <%= link_to list.name, list_claimable_path(list.id) %>
       <% end %>
+      <% if list.current_user_edit %>
+        <%= link_to image_tag('icons/pencil.svg', alt: 'Edit Items', class: 'hidden-edit-link'), list_items_path(list.id) %>
+      <% end %>
     </li>
   <% end %>
   </ul>

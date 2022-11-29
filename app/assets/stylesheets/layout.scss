@@ -16,10 +16,20 @@ body {
 ul.side-lists {
   li {
     padding-top: 5px;
+
+    &:hover {
+      .hidden-edit-link {
+         display: inline;
+      }
+    }
+  }
+
+  .hidden-edit-link {
+    display: none;
   }
 }
 
-a > svg {
+a > img {
   cursor: pointer;
 }
 
