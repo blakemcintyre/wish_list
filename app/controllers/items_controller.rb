@@ -23,10 +23,13 @@ class ItemsController < ApplicationController
   end
 
   def update
-    @item.update_attributes(item_params)
+    @item.update(item_params)
     respond_to do |format|
       format.json { render json: @item }
-      format.html { redirect_to list_items_path(@item.list_id) }
+      format.html do
+        # Redirect to the list the item use to be associated to if it changed
+        redirect_to list_items_path(@item.previous_changes.fetch('list_id', [@item.list_id]).first)
+      end
     end
   end
 
