@@ -64,9 +64,11 @@ class ItemsGrouper
 
     if category.parent_category_id.blank?
       primary_categories << category
-    else
+    elsif category.parent_category.present?
       sub_categories[category.parent_category_id] << category
       primary_categories << category.parent_category
+    else
+      Rails.logger.warn("EDGE CASE: category #{category.id} has parent_category_id #{category.parent_category_id} but it doesn't exist")
     end
   end
 
