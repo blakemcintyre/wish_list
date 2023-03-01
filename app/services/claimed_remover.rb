@@ -12,7 +12,7 @@ class ClaimedRemover
 
   def process_claims
     Item.claimed_with_quantity_sum(@list.id).each do |item|
-      next item.destroy if item.claimed_qty >= item.quantity
+      next item.destroy if item.quantity.present? && item.claimed_qty >= item.quantity
 
       partially_claimed(item)
     end
@@ -20,7 +20,7 @@ class ClaimedRemover
 
   def partially_claimed(item)
     Item.transaction do
-      item.update(quantity: item.quantity - item.claimed_qty)
+      item.update(quantity: item.quantity - item.claimed_qty) if item.quantity.present?
       item.item_claims.delete_all
     end
   end
