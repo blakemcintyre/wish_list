@@ -35,7 +35,7 @@ class CategoriesController < ApplicationController
   def update
     @category = categories_scope.find(params[:id])
 
-    if @category.update_attributes(category_params)
+    if @category.update(category_params)
       @category.items.update_all(list_id: @category.list_id)
 
       respond_to do |format|
