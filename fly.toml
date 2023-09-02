@@ -14,7 +14,7 @@ kill_timeout = "5s"
 [build]
   [build.args]
     BUNDLER_VERSION = "2.3.15"
-    NODE_VERSION = "17.7.2"
+    NODE_VERSION = "18.12"
     RUBY_VERSION = "3.0.4"
 
 [deploy]
