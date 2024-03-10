@@ -267,7 +267,7 @@ DEPENDENCIES
   rails-controller-testing
   rspec-rails (~> 6.1.1)
   sassc-rails
-  sorted_set
+  sorted_set (~> 1.0.3)
   spring
   uglifier (>= 3.0.3)
   web-console (~> 4.0.4)
