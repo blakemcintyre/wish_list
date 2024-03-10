@@ -214,7 +214,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    set (1.0.3)
+    set (1.1.0)
     sorted_set (1.0.3)
       rbtree
       set (~> 1.0)
