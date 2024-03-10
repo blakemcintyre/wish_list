@@ -13,7 +13,7 @@ gem "bootstrap-sass", "~> 3.4"
 gem "pry-byebug", "~> 3.4"
 gem "pry-rails"
 gem "awesome_print", "~> 1.7"
-gem "ffi", "~> 1.15.5"
+gem "ffi", "~> 1.16.3"
 gem "sorted_set", "~> 1.0.3"
 gem "puma"
 
