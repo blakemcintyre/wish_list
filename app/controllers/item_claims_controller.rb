@@ -4,7 +4,9 @@ class ItemClaimsController < ApplicationController
 
   def index
     @list = List.find(params[:list_id])
-    @items_grouper = ItemsGrouper.new(@list, current_user)
+    grouper = ListItemGrouper.new(@list, current_user)
+    @claimed, @unclaimed = grouper.process
+    @recently_deleted_items = @list.items.includes(:category).recently_deleted
   end
 
   def new
