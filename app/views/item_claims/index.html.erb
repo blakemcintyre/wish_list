@@ -1,24 +1,24 @@
 <h2 class="list-name"><%= @list.name %></h2>
 
-<% if @items_grouper.empty? %>
+<% if @claimed.empty? && @unclaimed.empty? %>
   Nothing has been added to the wish list yet.
 <% else %>
   <div class="row">
     <div class="col-md-8">
-      <% if @items_grouper.unclaimed_categories.empty? %>
+      <% if @unclaimed.empty? %>
         Nothing is available to claim on the wish list.
       <% else %>
         <h3>Available Items</h3>
         <table id="claimable-items" class="table table-condensed table-hover">
           <tbody>
-          <% @items_grouper.unclaimed_categories.each do |category| %>
-            <%= render partial: 'items/table_header', locals: { category: category, sub_category: false } %>
-            <% @items_grouper.items_by_category[[category.id, :unclaimed]]&.each do |item| %>
+          <% @unclaimed.each do |(category_id, category_name), category_details| %>
+            <%= render partial: 'items/table_header', locals: { category_id:, category_name:, has_items: category_details[:items].present?, sub_category: false } %>
+            <% category_details[:items].each do |item|%>
               <%= render partial: 'items/item_row', locals: { item: item, sub_category: false } %>
             <% end %>
-            <% @items_grouper.unclaimed_sub_categories[category.id]&.each do |sub_category| %>
-              <%= render partial: 'items/table_header', locals: { category: sub_category, sub_category: true } %>
-              <% @items_grouper.items_by_category[[sub_category.id, :unclaimed]]&.each do |item| %>
+            <% category_details[:sub_categories].each do |(sub_category_id, sub_category_name), items| %>
+              <%= render partial: 'items/table_header', locals: { category_id: sub_category_id, category_name: sub_category_name, has_items: items.present?, sub_category: true } %>
+              <% items.each do |item| %>
                 <%= render partial: 'items/item_row', locals: { item: item, sub_category: true } %>
               <% end %>
             <% end %>
@@ -27,47 +27,39 @@
         </table>
       <% end %>
 
-      <% if @items_grouper.claimed_categories.present? %>
+      <% if @claimed.present? %>
         <h3>Claimed Items</h3>
         <table id="claimed-items" class="table table-condensed table-hover">
           <tbody>
-          <% @items_grouper.claimed_categories.each do |category| %>
-            <tr class="category-header">
-              <td colspan="2"><h4><%= category.name %></h4></td>
-              <td class="qty-heading">Qty</td>
-              <td class="claim-cell"></td>
-            </tr>
-            <% @items_grouper.items_by_category[[category.id, :claimed]]&.each do |item| %>
-              <% user_claim = item.item_claims.detect { |ic| ic.user == current_user } %>
+          <% @claimed.each do |(category_id, category_name), category_details| %>
+            <%= render partial: 'items/table_header', locals: { category_id:, category_name:, has_items: category_details[:items].present?, sub_category: false } %>
+            <% category_details[:items]&.each do |item| %>
               <tr id="item-<%= item.id %>">
                 <td colspan="2"><%= item.name %></td>
-                <td><%= item.all_claimed_quantity %><small class="grey">/<%= item.quantity || '-' %></small></td>
+                <td><%= item.total_claimed_quantity.to_i %><small class="grey">/<%= item.quantity || '-' %></small></td>
                 <td class="claim-cell text-right">
-                  <% if item.deleted_at.blank? && user_claim.present? %>
-                    <%= link_to 'Edit', edit_item_claim_path(user_claim), class: 'btn btn-primary btn-xs' %>
-                    <%= link_to 'Unclaim', item_claim_path(user_claim), class: 'btn btn-danger btn-xs', method: :delete %>
+                  <% if item.user_claimed_quantity.positive? %>
+                    <% item_claim_id = item.claimed_ids.first %>
+                    <%= link_to 'Edit', edit_item_claim_path(item_claim_id), class: 'btn btn-primary btn-xs' %>
+                    <%= link_to 'Unclaim', item_claim_path(item_claim_id), class: 'btn btn-danger btn-xs', method: :delete %>
                   <% end %>
                 </td>
               </tr>
               <%= render partial: 'items/claim_notes', locals: { item: item, sub_category: false } if item.claim_notes.compact.present? %>
             <% end %>
-            <% @items_grouper.claimed_sub_categories[category.id]&.each do |sub_category| %>
-              <tr class="category-header">
-                <td class="sub-category-indent"></td>
-                <td><h5><%= sub_category.name %></h5></td>
-                <td class="qty-heading">Qty</td>
-                <td class="claim-cell"></td>
-              </tr>
-              <% @items_grouper.items_by_category[[sub_category.id, :claimed]]&.each do |item| %>
-                <% user_claim = item.item_claims.detect { |ic| ic.user == current_user } %>
+            <% category_details[:sub_categories].each do |(sub_category_id, sub_category_name), items| %>
+              <%= render partial: 'items/table_header', locals: { category_id: sub_category_id, category_name: sub_category_name, has_items: items.present?, sub_category: true } %>
+              <% items&.each do |item| %>
+                <% item_claim_id = item.claimed_ids.first %>
                 <tr id="item-<%= item.id %>">
                   <td class="sub-category-indent"></td>
                   <td><%= item.name %></td>
-                  <td><%= item.all_claimed_quantity %><small class="grey">/<%= item.quantity || '-' %></small></td>
+                  <td><%= item.total_claimed_quantity.to_i %><small class="grey">/<%= item.quantity || '-' %></small></td>
                   <td class="claim-cell text-right">
-                    <% if item.deleted_at.blank? && user_claim.present? %>
-                      <%= link_to 'Edit', edit_item_claim_path(user_claim), class: 'btn btn-primary btn-xs' %>
-                      <%= link_to 'Unclaim', item_claim_path(user_claim), class: 'btn btn-danger btn-xs', method: :delete %>
+                    <% if item.user_claimed_quantity.positive? %>
+                      <% item_claim_id = item.claimed_ids.first %>
+                      <%= link_to 'Edit', edit_item_claim_path(item_claim_id), class: 'btn btn-primary btn-xs' %>
+                      <%= link_to 'Unclaim', item_claim_path(item_claim_id), class: 'btn btn-danger btn-xs', method: :delete %>
                     <% end %>
                   </td>
                 </tr>
@@ -82,7 +74,7 @@
   </div>
 <% end %>
 
-<% if @items_grouper.recently_deleted_items.present? %>
+<% if @recently_deleted_items.present? %>
   <div class="row">
     <div class="col-md-8">
       <h4>Recently Removed Items</h4>
@@ -94,7 +86,7 @@
             </tr>
           </thead>
           <tbody>
-          <% @items_grouper.recently_deleted_items.each do |item| %>
+          <% @recently_deleted_items.each do |item| %>
             <tr id="item-<%= item.id %>">
               <td><%= item.category.name %></td>
               <td><%= item.name %></td>

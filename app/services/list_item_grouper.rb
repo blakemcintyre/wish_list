@@ -48,8 +48,6 @@ class ListItemGrouper
     Hash.new { |h, k| h[k] = { items: [], sub_categories: {} } }
   end
 
-  # TODO: copy recently_deleted_items
-
   def items_query
     Item.select(
         <<~SQL
@@ -57,14 +55,12 @@ class ListItemGrouper
           categories.name AS categories_name,
           parent_categories_categories.id AS parent_categories_id,
           parent_categories_categories.name AS parent_categories_name,
-          items.id,
-          items.name,
-          items.quantity,
-          items.list_id,
+          items.*,
           SUM(COALESCE(user_claimed_quantity, 0)) AS user_claimed_quantity,
           SUM(COALESCE(claimed_quantity, 0)) AS total_claimed_quantity,
           SUM(items.quantity - COALESCE(claimed_quantity, 0)) AS quantity_remaining,
-          claim_notes
+          claim_notes,
+          claimed_ids
         SQL
       )
       .joins(:category)
@@ -72,7 +68,7 @@ class ListItemGrouper
       .joins("LEFT OUTER JOIN (#{claims_query.to_sql}) AS item_claims ON item_claims.item_id = items.id")
       .where(list: @list)
       .merge(Item.undeleted)
-      .group('"categories"."id", "parent_categories_categories"."id", "items"."id", claim_notes')
+      .group('"categories"."id", "parent_categories_categories"."id", "items"."id", claim_notes, claimed_ids')
       .order(Arel.sql('COALESCE(parent_categories_categories.name, categories.name) ASC, "items"."name" ASC'))
   end
 
@@ -85,7 +81,10 @@ class ListItemGrouper
           SUM(item_claims.quantity) FILTER (WHERE item_claims.user_id = #{@user.id}),
           0
         ) AS user_claimed_quantity,
-        ARRAY_AGG("item_claims".notes) AS claim_notes
+        ARRAY_AGG("item_claims".notes) AS claim_notes,
+        ARRAY_AGG("item_claims".id) FILTER (
+        WHERE "item_claims"."user_id" = #{@user.id}
+        ) AS claimed_ids
       SQL
     )
     .joins(:item)
