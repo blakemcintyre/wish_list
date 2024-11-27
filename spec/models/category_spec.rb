@@ -25,5 +25,17 @@ RSpec.describe Category, type: :model do
         expect(category.deleted_at).not_to be_nil
       end
     end
+
+    context 'when there are sub categories' do
+      let(:sub_category) { create(:category, parent_category: category) }
+
+      before do
+        create(:item, category: sub_category)
+      end
+
+      it 'removes the sub category and its items' do
+        expect { category.remove }.to change { described_class.count }.by(-2)
+      end
+    end
   end
 end

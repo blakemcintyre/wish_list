@@ -1,6 +1,7 @@
 class Category < ActiveRecord::Base
   belongs_to :list
   belongs_to :parent_category, class_name: 'Category', optional: true
+  has_many :sub_categories, class_name: 'Category', foreign_key: 'parent_category_id', dependent: :destroy
   has_many :items, dependent: :destroy
   has_many :item_claims, through: :items
 
@@ -17,6 +18,7 @@ class Category < ActiveRecord::Base
   # If the category has no items then it's safe to just delete it
   def remove
     items.each(&:remove)
+    sub_categories.each(&:remove)
 
     if items.any?(&:persisted?)
       touch(:deleted_at)
