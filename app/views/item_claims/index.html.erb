@@ -50,6 +50,7 @@
             <% category_details[:sub_categories].each do |(sub_category_id, sub_category_name), items| %>
               <%= render partial: 'items/table_header', locals: { category_id: sub_category_id, category_name: sub_category_name, has_items: items.present?, sub_category: true } %>
               <% items&.each do |item| %>
+                <% next if item.claimed_ids.nil? %>
                 <% item_claim_id = item.claimed_ids.first %>
                 <tr id="item-<%= item.id %>">
                   <td class="sub-category-indent"></td>
