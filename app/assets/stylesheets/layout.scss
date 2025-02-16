@@ -3,10 +3,6 @@ body {
   min-width: 1190px;
 }
 
-.main-content-margin-hack {
-  margin-top: 50px;
-}
-
 .flash-message {
   p {
     padding: 8px;
@@ -115,10 +111,10 @@ div.form-buttons {
 }
 
 .lists {
-  max-width: 800px;
+  max-width: 860px;
 
   th:last-of-type, td:last-of-type {
-    width: 140px;
+    width: 170px;
   }
 
   a[data-method="delete"] {
@@ -155,5 +151,15 @@ div.form-buttons {
     text-align: center;
     vertical-align: middle;
     padding: 0 10px;
+  }
+}
+
+.empty-item-list {
+  // border-bottom: 1px solid rgb(128, 128, 128);
+  padding: 16px 0;
+  margin: 16px 0 40px 0;
+
+  &--line {
+    border-bottom: 1px solid rgb(128, 128, 128);
   }
 }

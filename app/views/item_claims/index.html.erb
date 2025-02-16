@@ -1,12 +1,16 @@
 <h2 class="list-name"><%= @list.name %></h2>
 
 <% if @claimed.empty? && @unclaimed.empty? %>
-  Nothing has been added to the wish list yet.
+  <h5 class="empty-item-list">
+    Nothing has been added to the wish list yet.
+  </h5>
 <% else %>
   <div class="row">
     <div class="col-md-8">
       <% if @unclaimed.empty? %>
-        Nothing is available to claim on the wish list.
+        <h5 class="empty-item-list empty-item-list--line">
+          Nothing is available to claim on the wish list.
+        </h5>
       <% else %>
         <h3>Available Items</h3>
         <table id="claimable-items" class="table table-condensed table-hover">

@@ -24,7 +24,7 @@
     <%= link_to "Remove Claimed", remove_claimed_list_path(@list), method: :patch %>
   </div>
 </div>
-<table id="item-template" class="hidden">
+<table id="item-template" class="invisible">
   <tbody>
     <%= render partial: 'items/item', locals: { item: Item.new } %>
   </tbody>

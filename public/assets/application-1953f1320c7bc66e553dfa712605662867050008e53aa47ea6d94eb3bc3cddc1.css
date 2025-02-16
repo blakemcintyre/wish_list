@@ -5603,17 +5603,17 @@ tbody.collapse.in {
 }
 
 /* line 14, /Users/blake/.asdf/installs/ruby/2.7.2/lib/ruby/gems/2.7.0/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
-.navbar-header:before, .navbar-header:after {
+.navbar-brand:before, .navbar-brand:after {
   display: table;
   content: " ";
 }
 /* line 19, /Users/blake/.asdf/installs/ruby/2.7.2/lib/ruby/gems/2.7.0/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
-.navbar-header:after {
+.navbar-brand:after {
   clear: both;
 }
 @media (min-width: 768px) {
   /* line 31, /Users/blake/.asdf/installs/ruby/2.7.2/lib/ruby/gems/2.7.0/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_navbar.scss */
-  .navbar-header {
+  .navbar-brand {
     float: left;
   }
 }
@@ -5707,18 +5707,18 @@ tbody.collapse.in {
 }
 
 /* line 129, /Users/blake/.asdf/installs/ruby/2.7.2/lib/ruby/gems/2.7.0/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_navbar.scss */
-.container > .navbar-header,
+.container > .navbar-brand,
 .container > .navbar-collapse,
-.container-fluid > .navbar-header,
+.container-fluid > .navbar-brand,
 .container-fluid > .navbar-collapse {
   margin-right: -15px;
   margin-left: -15px;
 }
 @media (min-width: 768px) {
   /* line 129, /Users/blake/.asdf/installs/ruby/2.7.2/lib/ruby/gems/2.7.0/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_navbar.scss */
-  .container > .navbar-header,
+  .container > .navbar-brand,
   .container > .navbar-collapse,
-  .container-fluid > .navbar-header,
+  .container-fluid > .navbar-brand,
   .container-fluid > .navbar-collapse {
     margin-right: 0;
     margin-left: 0;

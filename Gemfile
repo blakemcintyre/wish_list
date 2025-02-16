@@ -9,7 +9,7 @@ gem "uglifier", ">= 3.0.3"
 gem "jquery-rails", "~> 4.2"
 gem "jquery-ui-rails", "~> 7.0.0", git: 'https://github.com/jquery-ui-rails/jquery-ui-rails.git'
 gem "devise", "~> 4.9"
-gem "bootstrap-sass", "~> 3.4"
+gem "bootstrap", "~> 4"
 gem "pry-byebug", "~> 3.4"
 gem "pry-rails"
 gem "awesome_print", "~> 1.7"
