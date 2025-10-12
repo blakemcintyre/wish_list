@@ -7,7 +7,7 @@ gem "pg", "~> 1.5"
 gem "sassc-rails"
 gem "uglifier", ">= 3.0.3"
 gem "jquery-rails", "~> 4.2"
-gem "jquery-ui-rails", "~> 7.0.0", git: 'https://github.com/jquery-ui-rails/jquery-ui-rails.git'
+gem "jquery-ui-rails", "~> 8.0.0", git: 'https://github.com/jquery-ui-rails/jquery-ui-rails.git'
 gem "devise", "~> 4.9"
 gem "bootstrap", "~> 4"
 gem "pry-byebug", "~> 3.4"
