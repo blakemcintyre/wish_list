@@ -1,0 +1,6 @@
+# Disable mise Ruby management for this directory
+# Ruby will be managed by asdf instead
+
+[settings]
+# Don't manage ruby with mise in this directory
+disable_tools = ["ruby"]
