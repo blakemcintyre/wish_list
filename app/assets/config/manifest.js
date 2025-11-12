@@ -5,3 +5,4 @@
 //= link icons/infinity.svg
 //= link icons/pencil.svg
 //= link icons/trash.svg
+//= link_tree ../builds

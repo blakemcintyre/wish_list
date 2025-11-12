@@ -12,7 +12,7 @@
           Nothing is available to claim on the wish list.
         </h5>
       <% else %>
-        <h3>Available Items</h3>
+        <h5>Available Items</h5>
         <table id="claimable-items" class="table table-condensed table-hover">
           <tbody>
           <% @unclaimed.each do |(category_id, category_name), category_details| %>

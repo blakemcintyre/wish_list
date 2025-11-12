@@ -1,5 +1,13 @@
 {
   "dependencies": {
-    "yarn": "^1.22.18"
+    "yarn": "^1.22.22"
+  },
+  "scripts": {
+    "build:css": "sass ./app/assets/stylesheets/application.sass.scss:./app/assets/builds/site.css --no-source-map --load-path=node_modules"
+  },
+  "devDependencies": {
+    "sass": "^1.94.0",
+    "bootstrap": "^4.6.2",
+    "jquery-ui-dist": "^1.13.3"
   }
 }

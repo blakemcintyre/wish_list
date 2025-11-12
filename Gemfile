@@ -4,11 +4,11 @@ ruby "3.2.2"
 
 gem "rails", "~> 6.1.7.9"
 gem "pg", "~> 1.6"
-gem "sassc-rails"
 gem "uglifier", ">= 3.0.3"
 gem "jquery-rails", "~> 4.2"
 gem "jquery-ui-rails", "~> 8.0.0", git: 'https://github.com/jquery-ui-rails/jquery-ui-rails.git'
 gem "devise", "~> 4.9"
+gem "cssbundling-rails", "~> 1.4"
 gem "bootstrap", "~> 4"
 gem "pry-byebug", "~> 3.4"
 gem "pry-rails"
@@ -31,3 +31,5 @@ group :test do
   gem "rspec-rails", "~> 6.1.1"
   gem 'rails-controller-testing'
 end
+
+
