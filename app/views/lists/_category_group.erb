@@ -1,40 +1,23 @@
-<table class="table table-condensed table-hover list-items <%= sub_category ? "sub-categroy-table" : "" %>" data-category-id="<%= category.id %>">
+<table class="table table-sm table-hover list-items <%= sub_category ? "sub-categroy-table" : "" %>" data-category-id="<%= category.id %>">
   <thead>
-    <tr class="category-row">
-      <input class="category-id" type="hidden" value="<%= category.id %>">
-      <th>
-        <span class="category-show-section category-text"><%= category.name %></span>
-        <input class="category-edit-section category-edit-input form-control" type="text" value="<%= category.name %>">
-      </th>
-      <th class="quantity-header qty-heading qty-cell">
-        QTY
-      </th>
-      <th class="text-right table-actions">
-        <!-- Show -->
-        <a class="category-show-section category-edit" title="Edit">
-          <%= image_tag "icons/pencil.svg", alt: "Edit" %>
-        </a>
-        <a class="category-show-section category-remove" rel="nofollow" data-method="delete" href="<%= list_category_path(@list, category) %>"  title="Delete">
-          <%= image_tag "icons/trash.svg", alt: "Delete" %>
-        </a>
-        <a class="category-show-section category-move"  title="Move">
-          <%= image_tag "icons/arrows_left_right.svg", alt: "Move/Edit" %>
-        </a>
-        <!-- Edit -->
-        <a class="category-edit-section category-update text-muted">Save</a>
-        <span class="category-edit-section text-muted">|</span>
-        <a class="category-edit-section category-cancel text-muted">Cancel</a>
-      </th>
-    </tr>
+    <%= render partial: 'categories/category_header', locals: { category: category, list: @list } %>
   </thead>
   <tbody id="items-for-category-<%= category.id %>">
     <%= render items if items %>
-    <tr>
+    <tr id="add-item-for-category-<%= category.id %>"
+        data-controller="item-form"
+        data-item-form-url-value="<%= list_items_path(@list) %>"
+        data-item-form-category-id-value="<%= category.id %>"
+        data-item-form-list-id-value="<%= @list.id %>">
       <td>
-        <input type="text" class="form-control add-item" placeholder="Add an item" data-category-id="<%= category.id %>">
+        <input type="text" class="form-control" placeholder="Add an item"
+               data-item-form-target="nameInput"
+               data-action="keydown->item-form#submit">
       </td>
-      <td><input class="form-control add-quantity claim-quantity-input qty-cell" type="number" value="1"></td>
-      <td class="table-actions" />
+      <td><input class="form-control claim-quantity-input qty-cell" type="number" value="1"
+                 data-item-form-target="quantityInput"
+                 data-action="keydown->item-form#submit"></td>
+      <td class="table-actions"></td>
     </tr>
   </tbody>
 </table>

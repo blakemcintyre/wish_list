@@ -13,7 +13,7 @@
         </h5>
       <% else %>
         <h3>Available Items</h3>
-        <table id="claimable-items" class="table table-condensed table-hover">
+        <table id="claimable-items" class="table table-sm table-hover">
           <tbody>
           <% @unclaimed.each do |(category_id, category_name), category_details| %>
             <%= render partial: 'items/table_header', locals: { category_id:, category_name:, has_items: category_details[:items].present?, sub_category: false } %>
@@ -33,7 +33,7 @@
 
       <% if @claimed.present? %>
         <h3>Claimed Items</h3>
-        <table id="claimed-items" class="table table-condensed table-hover">
+        <table id="claimed-items" class="table table-sm table-hover">
           <tbody>
           <% @claimed.each do |(category_id, category_name), category_details| %>
             <%= render partial: 'items/table_header', locals: { category_id:, category_name:, has_items: category_details[:items].present?, sub_category: false } %>
@@ -41,11 +41,11 @@
               <tr id="item-<%= item.id %>">
                 <td colspan="2"><%= item.name %></td>
                 <td><%= item.total_claimed_quantity.to_i %><small class="grey">/<%= item.quantity || '-' %></small></td>
-                <td class="claim-cell text-right">
+                <td class="claim-cell text-end">
                   <% if item.user_claimed_quantity.positive? %>
                     <% item_claim_id = item.claimed_ids.first %>
                     <%= link_to 'Edit', edit_item_claim_path(item_claim_id), class: 'btn btn-primary btn-xs' %>
-                    <%= link_to 'Unclaim', item_claim_path(item_claim_id), class: 'btn btn-danger btn-xs', method: :delete %>
+                    <%= link_to 'Unclaim', item_claim_path(item_claim_id), class: 'btn btn-danger btn-xs', data: { turbo_method: :delete } %>
                   <% end %>
                 </td>
               </tr>
@@ -60,11 +60,11 @@
                   <td class="sub-category-indent"></td>
                   <td><%= item.name %></td>
                   <td><%= item.total_claimed_quantity.to_i %><small class="grey">/<%= item.quantity || '-' %></small></td>
-                  <td class="claim-cell text-right">
+                  <td class="claim-cell text-end">
                     <% if item.user_claimed_quantity.positive? %>
                       <% item_claim_id = item.claimed_ids.first %>
                       <%= link_to 'Edit', edit_item_claim_path(item_claim_id), class: 'btn btn-primary btn-xs' %>
-                      <%= link_to 'Unclaim', item_claim_path(item_claim_id), class: 'btn btn-danger btn-xs', method: :delete %>
+                      <%= link_to 'Unclaim', item_claim_path(item_claim_id), class: 'btn btn-danger btn-xs', data: { turbo_method: :delete } %>
                     <% end %>
                   </td>
                 </tr>
@@ -83,7 +83,7 @@
   <div class="row">
     <div class="col-md-8">
       <h4>Recently Removed Items</h4>
-        <table id="recently-delete-items" class="table table-condensed table-hover">
+        <table id="recently-delete-items" class="table table-sm table-hover">
           <thead>
             <tr>
               <th>Category</th>
