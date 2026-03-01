@@ -70,7 +70,9 @@ GEM
     autoprefixer-rails (10.4.19.0)
       execjs (~> 2)
     awesome_print (1.9.2)
+    base64 (0.3.0)
     bcrypt (3.1.20)
+    bigdecimal (4.0.1)
     bindex (0.8.1)
     bootstrap (4.6.2.1)
       autoprefixer-rails (>= 9.1.0)
@@ -88,6 +90,7 @@ GEM
       responders
       warden (~> 1.2.3)
     diff-lcs (1.5.1)
+    drb (2.2.3)
     erubi (1.13.0)
     execjs (2.8.1)
     factory_bot (6.4.6)
@@ -119,6 +122,7 @@ GEM
     method_source (1.0.0)
     mini_mime (1.1.5)
     minitest (5.25.1)
+    mutex_m (0.3.0)
     net-imap (0.5.7)
       date
       net-protocol
@@ -250,17 +254,22 @@ GEM
 PLATFORMS
   arm64-darwin-21
   arm64-darwin-22
+  arm64-darwin-25
   x86_64-linux
 
 DEPENDENCIES
   awesome_print (~> 1.7)
+  base64
+  bigdecimal
   bootstrap (~> 4)
   devise (~> 4.9)
+  drb
   factory_bot_rails (~> 6.4.3)
   ffi (~> 1.16.3)
   jquery-rails (~> 4.2)
   jquery-ui-rails (~> 8.0.0)!
   listen
+  mutex_m
   pg (~> 1.6)
   pry-byebug (~> 3.4)
   pry-rails
@@ -275,7 +284,7 @@ DEPENDENCIES
   web-console (~> 4.2.1)
 
 RUBY VERSION
-   ruby 3.2.2p53
+   ruby 3.4.7p58
 
 BUNDLED WITH
    2.3.15

@@ -1,8 +1,12 @@
 source "https://rubygems.org"
 
-ruby "3.2.2"
+ruby "3.4.7"
 
 gem "rails", "~> 6.1.7.9"
+gem "base64"
+gem "bigdecimal"
+gem "mutex_m"
+gem "drb"
 gem "pg", "~> 1.6"
 gem "sassc-rails"
 gem "uglifier", ">= 3.0.3"
