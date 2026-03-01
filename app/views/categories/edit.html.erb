@@ -2,7 +2,7 @@
 
 <div class="row">
   <div class="col-md-4">
-    <%= form_for(@category) do |f| %>
+    <%= form_with(model: @category, data: { turbo: false }) do |f| %>
       <%= f.hidden_field :id %>
 
       <% unless @category.errors.empty? %>
@@ -13,22 +13,27 @@
         </ul>
       <% end %>
 
-      <div class="form-group">
+      <div class="mb-3">
         <%= f.label :name %>
         <%= f.text_field :name, required: true, class: "form-control" %>
       </div>
 
-      <div class="form-group">
-        <%= f.label :list_id %>
-        <%= f.select :list_id, @lists.pluck(:name, :id), {}, { class: "form-control" } %>
+      <div data-controller="dependent-select"
+           data-dependent-select-url-value="/lists/:list_id/categories.json?parent_only=true"
+           data-dependent-select-exclude-id-value="<%= @category.id %>"
+           data-dependent-select-include-blank-value="true">
+        <div class="mb-3">
+          <%= f.label :list_id %>
+          <%= f.select :list_id, @lists.pluck(:name, :id), {}, { class: "form-control", data: { action: "change->dependent-select#change" } } %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :parent_category_id %>
+          <%= f.select :parent_category_id, @parent_categories_in_list.pluck(:name, :id), { include_blank: true }, { class: "form-control", data: { dependent_select_target: "target" } } %>
+        </div>
       </div>
 
-      <div class="form-group">
-        <%= f.label :parent_category_id %>
-        <%= f.select :parent_category_id, @parent_categories_in_list.pluck(:name, :id), { include_blank: true }, { class: "form-control" } %>
-      </div>
-
-      <div class="form-group form-buttons">
+      <div class="mb-3 form-buttons">
         <%= f.submit "Save", class: "btn btn-success btn-secondary" %>
         <%= link_to "Cancel", list_items_path(@category.list_id), class: "btn btn-secondary" %>
       </div>

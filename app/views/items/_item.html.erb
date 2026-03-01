@@ -1,27 +1,35 @@
-<tr>
-  <input class="item-id" type="hidden" value="<%= item.id %>">
+<tr id="<%= dom_id(item) %>"
+    data-controller="inline-edit"
+    data-inline-edit-url-value="<%= item_path(item) %>"
+    data-inline-edit-param-key-value="item">
   <td class="item-row">
-    <span class="item-show-section item-text"><%= item.name %></span>
-    <input class="item-edit-section item-edit-input form-control" type="text" value="<%= item.name %>">
+    <span data-inline-edit-target="show"><%= item.name %></span>
+    <input data-inline-edit-target="edit nameInput"
+           data-action="keydown->inline-edit#saveOnEnter"
+           class="form-control" type="text" value="<%= item.name %>" hidden>
   </td>
   <td class="quantity qty-cell">
-    <span class="item-show-section item-quantity"><%= item.quantity %></span>
-    <input class="item-edit-section item-edit-quantity form-control" type="number" value="<%= item.quantity %>">
+    <span data-inline-edit-target="show"><%= item.quantity %></span>
+    <input data-inline-edit-target="edit quantityInput"
+           data-action="keydown->inline-edit#saveOnEnter"
+           class="form-control" type="number" value="<%= item.quantity %>" hidden>
   </td>
-  <td class="text-right table-actions">
-    <!-- Show -->
-    <a class="item-show-section item-edit" title="Edit">
+  <td class="text-end table-actions">
+    <a data-inline-edit-target="show" data-action="click->inline-edit#edit" title="Edit">
       <%= image_tag "icons/pencil.svg", alt: "Edit" %>
     </a>
-    <a class="item-show-section item-remove" title="Delete">
+    <a data-inline-edit-target="show"
+       href="<%= item_path(item) %>"
+       data-turbo-method="delete"
+       data-turbo-confirm="Are you sure?"
+       title="Delete">
       <%= image_tag "icons/trash.svg", alt: "Delete" %>
     </a>
-    <a class="item-show-section item-move" title="Move">
+    <a data-inline-edit-target="show" href="<%= edit_item_path(item) %>" title="Move">
       <%= image_tag "icons/arrows_left_right.svg", alt: "Move/Edit" %>
     </a>
-    <!-- Edit -->
-    <a class="item-edit-section item-update text-muted">Save</a>
-    <span class="item-edit-section text-muted">|</span>
-    <a class="item-edit-section item-cancel text-muted">Cancel</a>
+    <a data-inline-edit-target="edit" data-action="click->inline-edit#save" class="text-muted" hidden>Save</a>
+    <span data-inline-edit-target="edit" class="text-muted" hidden>|</span>
+    <a data-inline-edit-target="edit" data-action="click->inline-edit#cancel" class="text-muted" hidden>Cancel</a>
   </td>
-</li>
+</tr>

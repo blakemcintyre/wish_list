@@ -2,7 +2,7 @@
 
 <div class="row">
   <div class="col-md-4">
-    <%= form_for(@item_claim) do |f| %>
+    <%= form_with(model: @item_claim) do |f| %>
     <%= f.hidden_field :item_id %>
     <%= f.hidden_field :user_id %>
 
@@ -14,16 +14,16 @@
         </ul>
       <% end %>
 
-      <div class="form-group">
+      <div class="mb-3">
         <%= f.label :quantity %>
         <%= f.number_field :quantity, min: 1, max: max_claimable_quantity(@item), required: true, class: "form-control claim-quantity-input" %>
       </div>
-      <div class="form-group">
+      <div class="mb-3">
         <%= f.label :notes %>
         <%= f.text_field :notes, class: "form-control" %>
       </div>
 
-      <div class="form-group form-buttons">
+      <div class="mb-3 form-buttons">
         <%= f.submit "Save", class: "btn btn-success btn-secondary" %>
         <%= link_to "Cancel", list_claimable_path(@item.list_id), class: "btn btn-secondary" %>
       </div>

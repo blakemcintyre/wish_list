@@ -59,7 +59,7 @@ class ListsController < ApplicationController
     permission_attributes = params.delete(:permission_attributes).values.each_with_object([]) do |attrs, collection|
       next if attrs[:user_id].to_i.zero? && !attrs.key?(:id)
 
-      collection << attrs
+      collection << attrs.permit(:id, :user_id, :_destroy)
     end
 
     params.require(:list).permit(:name).tap do |attrs|

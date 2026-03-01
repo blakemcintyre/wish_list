@@ -2,7 +2,6 @@ class ItemsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_side_bar_lists, only: [:edit, :index]
   before_action :set_item, only: %i(edit update destroy)
-  respond_to :html, :json
 
   def index
     @list = current_user.lists.find(params[:list_id])
@@ -25,11 +24,12 @@ class ItemsController < ApplicationController
   def update
     @item.update(item_params)
     respond_to do |format|
-      format.json { render json: @item }
-      format.html do
-        # Redirect to the list the item use to be associated to if it changed
+      format.turbo_stream {
+        render turbo_stream: turbo_stream.replace(@item, partial: "items/item", locals: { item: @item })
+      }
+      format.html {
         redirect_to list_items_path(@item.previous_changes.fetch('list_id', [@item.list_id]).first)
-      end
+      }
     end
   end
 
@@ -38,11 +38,16 @@ class ItemsController < ApplicationController
 
     respond_to do |format|
       if @item.persisted?
-        format.json { render json: @item }
+        format.turbo_stream {
+          render turbo_stream: turbo_stream.before(
+            "add-item-for-category-#{@item.category_id}",
+            partial: "items/item",
+            locals: { item: @item }
+          )
+        }
       else
-        format.json {
-          render status: :unprocessable_entity,
-          json: { item: @item, errors: @item.errors.full_messages }
+        format.turbo_stream {
+          head :unprocessable_entity
         }
       end
     end
@@ -50,7 +55,10 @@ class ItemsController < ApplicationController
 
   def destroy
     @item.remove
-    head :no_content
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.remove(@item) }
+      format.html { head :no_content }
+    end
   end
 
   private
