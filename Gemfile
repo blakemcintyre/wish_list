@@ -24,6 +24,6 @@ end
 
 group :test do
   gem "factory_bot_rails", "~> 6.4"
-  gem "rspec-rails", "~> 7.0"
+  gem "rspec-rails", "~> 8.0.3"
   gem 'rails-controller-testing'
 end
