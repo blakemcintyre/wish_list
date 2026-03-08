@@ -1,4 +1,4 @@
-<%= form_for(@list) do |f| %>
+<%= form_with(model: @list) do |f| %>
 
       <% unless @list.errors.empty? %>
         <ul class="bg-danger">
@@ -8,12 +8,12 @@
         </ul>
       <% end %>
 
-      <div class="form-group">
+      <div class="mb-3">
         <%= f.label :name %>
         <%= f.text_field :name, required: true, class: "form-control" %>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <label>Permissions</label>
         <table class="form-table" id="list-permissions-table">
           <thead>
@@ -56,7 +56,7 @@
         </table>
       </div>
 
-      <div class="form-group form-buttons">
+      <div class="mb-3 form-buttons">
         <%= f.submit "Save", class: "btn btn-success btn-secondary" %>
         <%= link_to "Cancel", lists_path, class: "btn btn-secondary" %>
       </div>

@@ -39,12 +39,24 @@ class CategoriesController < ApplicationController
       @category.items.update_all(list_id: @category.list_id)
 
       respond_to do |format|
-        format.json { render json: @category }
+        format.turbo_stream {
+          render turbo_stream: turbo_stream.replace(
+            @category,
+            partial: "categories/category_header",
+            locals: { category: @category, list: @category.list }
+          )
+        }
         format.html { redirect_to list_items_path(@category.list_id) }
       end
     else
       respond_to do |format|
-        format.json { render json: @category }
+        format.turbo_stream {
+          render turbo_stream: turbo_stream.replace(
+            @category,
+            partial: "categories/category_header",
+            locals: { category: @category, list: @category.list }
+          )
+        }
         format.html do
           edit
           render action: :edit
